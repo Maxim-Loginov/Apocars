@@ -66,7 +66,8 @@ The Test buttons, game mounts, game materials and decorations come from your cop
 6. **Export:**
    - **Hot export** writes the car into the game. If the game is running, the car appears or rebuilds within a second.
    - To spawn one in front of you, set `Tools.Spawn` in the config to your car's ID.
-   - **Build mod** makes a standalone mod and a zip to share. [!NOTE]**YOU  DO NOT NEED TO LIST THIS MOD AS A DEPENDENCY. THAT IS THE WHOLE POINT. IT IS THE INTENDED WAY FOR YOU TO SHARE VEHICLES**
+   - **Build mod** makes a standalone mod and a zip to share. 
+   **YOU  DO NOT NEED TO LIST THIS MOD AS A DEPENDENCY. THAT IS THE WHOLE POINT. BUILDING VEHICLES INTO A STANDALONE MOD IS THE INTENDED WAY FOR YOU TO SHARE VEHICLES**
 
 Parts are made the same way: choose **Attachment** in the first step.
 
