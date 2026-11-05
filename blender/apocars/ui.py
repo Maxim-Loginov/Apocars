@@ -495,6 +495,14 @@ class APOCARS_PT_props(Step):
             sub.label(text="Used once more than one axle has power", icon="INFO")
 
         col = self.layout.box().column(align=True)
+        col.label(text="Steering", icon="DRIVER_ROTATIONAL_DIFFERENCE")
+        col.prop(s, "steer_angle")
+        col.prop(s, "steer_at_speed")
+        hint = col.row()
+        hint.enabled = False
+        hint.label(text="Turn speed: the player's Steering speed setting", icon="INFO")
+
+        col = self.layout.box().column(align=True)
         col.label(text="Fuel", icon="MOD_FLUID")
         col.prop(s, "fuel_capacity")
 

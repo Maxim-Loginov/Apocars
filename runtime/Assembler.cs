@@ -564,10 +564,52 @@ namespace Apocars
 
         /// Wheels, axle groups and the differentials that drive the powered wheels, written into the car's VehicleController
         /// (as NWH links them: each component names the next by a hash of its name).
+        /// Where NWH's sound manager puts its sources when a car spawns (VehicleController enginePosition, exhaustPosition,
+        /// transmissionPosition, the car's own space): the engine's sound (with the throttle clip the fitted engine
+        /// gives it), its starter and fan at the engine's attachment point, the gearbox there too, the exhaust's pops at
+        /// the exhaust's point (or the engine's). Left as the skeleton car's, they played at the Poloska's rear engine.
+        private static void SetSoundSpots(Dictionary<string, object> f, List<Dictionary<string, object>> attach, Dictionary<string, Marker> markers)
+        {
+            if (f == null) return;
+            Marker At(string kind) => attach.Where(a => Json.Str(a, "kind") == kind)
+                .Select(a => markers.TryGetValue(Json.Str(a, "node") ?? "", out var m) ? m : null).FirstOrDefault(m => m != null);
+            var engine = At("engine");
+            var exhaust = At("exhaust");
+            if (engine != null)
+            {
+                f["enginePosition"] = Snapshot.V(engine.Origin);
+                f["transmissionPosition"] = Snapshot.V(engine.Origin);
+            }
+            if (exhaust != null || engine != null) f["exhaustPosition"] = Snapshot.V((exhaust ?? engine).Origin);
+        }
+
+        /// How far the front wheels turn (spec steer_angle, degrees: the game's cars 30) and how much of it is left at
+        /// speed (steer_at_speed: the game's 0.4 at 54 km/h, half that at 180 km/h; NWH's speed-sensitive curve).
+        /// How fast they turn is the player's own Steering speed setting (the INPUT FSM sets it every 2 s).
+        private static void SetSteering(Dictionary<string, object> st, Dictionary<string, object> spec)
+        {
+            if (st == null) return;
+            if (spec.ContainsKey("steer_angle")) st["maximumSteerAngle"] = Math.Max(1.0, Math.Min(89.0, Json.Num(spec, "steer_angle", 30)));
+            if (spec.ContainsKey("steer_at_speed"))
+            {
+                double p = Math.Max(0.01, Math.Min(1.0, Json.Num(spec, "steer_at_speed", 0.4)));
+                var curve = Json.Obj(st, "speedSensitiveSteeringCurve");
+                if (curve != null)
+                    curve["keys"] = new List<object>
+                    {
+                        new List<object> { 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
+                        new List<object> { 0.3, p, -(1 - p), -(1 - p), 0.0, 0.0, 0.0 },
+                        new List<object> { 1.0, p / 2, -p / 4, p / 4, 0.0, 0.0, 0.0 },
+                    };
+            }
+        }
+
         private static void WirePowertrain(Dictionary<string, object> root, Dictionary<string, object> spec, List<Dictionary<string, object>> attach,
                                            Dictionary<string, Marker> markers, Result res)
         {
             var vc = Json.Arr(root, "components").OfType<Dictionary<string, object>>().FirstOrDefault(c => (Json.Str(c, "$type") ?? "").StartsWith("NWH.VehiclePhysics2.VehicleController,"));
+            SetSteering(Json.Obj(Json.Obj(vc, "fields"), "steering"), spec);
+            SetSoundSpots(Json.Obj(vc, "fields"), attach, markers);
             var pt = Json.Obj(Json.Obj(vc, "fields"), "powertrain");
             if (pt == null) { res.Problems.Add("no NWH powertrain on the skeleton"); return; }
 
@@ -1095,6 +1137,9 @@ namespace Apocars
             var engine = Hinge("engine");
             var rsound = car.Find("RSound");
             if (rsound != null) rsound.position = engine != null ? engine.position : car.TransformPoint(new Vector3(0, bounds.center.y, bounds.max.z - 0.6f));
+            // the horn (the switch panel's horn source, which the INPUT FSM plays) sounds from the engine too
+            var horn = car.Find("switch_panel/horn");
+            if (horn != null && rsound != null) horn.position = rsound.position;
 
             // fuel filler: the asset's cap, else its filler box (older exports), else at the left rear
             var capAt = attach.Where(x => Json.Str(x, "kind") == "fuelcap").Select(x => Point(Json.Str(x, "node"))).FirstOrDefault(x => x != null);

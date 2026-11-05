@@ -122,6 +122,8 @@ def spec(context, model):
     lines.append(f"  mass = {lua_value(s.mass if s.mode == 'VEHICLE' else s.part_mass)},")
     if s.mode == "VEHICLE":
         lines.append(f"  fuel = {lua_value(s.fuel_capacity)},")
+        lines.append(f"  steer_angle = {lua_value(round(s.steer_angle, 2))},")
+        lines.append(f"  steer_at_speed = {lua_value(round(s.steer_at_speed, 3))},")
         types = {"OPEN": 0, "LOCKED": 1, "LSD": 2}
 
         def diff(p, extra=None):

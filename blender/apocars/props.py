@@ -297,6 +297,15 @@ class ApocarsSettings(bpy.types.PropertyGroup):
                                                "lower lets the car float (the game's cars: 3000)")
     diff_center_front: FloatProperty(name="Front share", default=0.5, min=0.0, max=1.0, subtype="FACTOR",
                                      description="The share of the drive the front axle gets (0.5: even)")
+    steer_angle: FloatProperty(
+        name="Turn angle", default=30.0, min=5.0, max=70.0, precision=1,
+        description="How far the steering wheels turn at full lock, in degrees (the game's cars: 30). A longer car needs "
+                    "more to turn as tightly")
+    steer_at_speed: FloatProperty(
+        name="Angle at speed", default=0.4, min=0.05, max=1.0, subtype="FACTOR",
+        description="How much of the turn angle is left at speed: this share at 54 km/h, half of it at 180 km/h (the "
+                    "game's cars: 0.4). 1: the full angle at any speed. How fast the wheels turn is the player's Steering "
+                    "speed setting")
     fuel_capacity: FloatProperty(name="Tank size", default=21.0, min=1.0, max=2000.0, precision=1,
                                  description="How much fuel the car holds, in litres (the Poloska: 21). New copies "
                                              "come as full as the game's do")
