@@ -123,7 +123,17 @@ namespace Apocars
             var root = Json.Obj(copy, "root");
             // the vanilla part's looks and shape go; its workings stay
             StripAll(root, "UnityEngine.MeshFilter", "UnityEngine.MeshRenderer");
-            Strip(root, "UnityEngine.BoxCollider", "UnityEngine.MeshCollider", "UnityEngine.CapsuleCollider");
+            // the game's parts other than doors, hoods and lids bump by one solid collider on the part itself, its first:
+            // fitted, CheckTag makes that one a trigger (ColliderSetIsTrigger takes the first collider), off it's solid
+            // again. That component stays (so it stays first) and becomes this part's shape; the rest go
+            var firstSolid = (Json.Arr(root, "components") ?? new List<object>()).OfType<Dictionary<string, object>>()
+                .FirstOrDefault(c => (Json.Str(c, "$type") ?? "").Contains("Collider,"));
+            if (firstSolid != null && !(((Json.Str(firstSolid, "$type") ?? "").StartsWith("UnityEngine.BoxCollider,") ||
+                                        (Json.Str(firstSolid, "$type") ?? "").StartsWith("UnityEngine.MeshCollider,")) &&
+                                       !Json.Bool(Json.Obj(firstSolid, "props"), "isTrigger")))
+                firstSolid = null;   // a door's tiny sphere, or a trigger: the door way (solids under "colliders")
+            Json.Arr(root, "components")?.RemoveAll(c => !ReferenceEquals(c, firstSolid) &&
+                new[] { "UnityEngine.BoxCollider", "UnityEngine.MeshCollider", "UnityEngine.CapsuleCollider" }.Any(t => (Json.Str(c, "$type") ?? "").StartsWith(t + ",")));
             var colliders = Json.Arr(root, "children")?.OfType<Dictionary<string, object>>().FirstOrDefault(c => Json.Str(c, "name") == "colliders");
             Json.Arr(colliders, "children")?.Clear();
             Json.Arr(root, "children")?.RemoveAll(c => Json.Str(c, "name") == "model");
@@ -232,17 +242,37 @@ namespace Apocars
                 }
             }
             // loose, it bumps and is picked up by its overall box (as the game's parts are)
-            var whole = go.AddComponent<BoxCollider>();
-            whole.isTrigger = true;    // what the player looks at to pick it up, as on the game's doors: it never bumps
-            whole.center = bounds.center;
-            whole.size = any ? bounds.size : Vector3.one * 0.3f;
-            if (solids.Count == 0 && any)
+            var own = firstSolid != null ? go.GetComponent<Collider>() : null;
+            if (own != null)
+            {
+                // its own collider, as the game's part has it: a tyre for a wheel, else its box; with solids of the
+                // asset's, a speck (they give the shape, and the game still has its collider to switch)
+                own.isTrigger = false;
+                var size = any ? bounds.size : Vector3.one * 0.3f;
+                bool speck = solids.Count > 0;
+                if (own is BoxCollider ob) { ob.center = bounds.center; ob.size = speck ? Vector3.one * 0.01f : size; }
+                else if (own is MeshCollider om)
+                {
+                    om.convex = true;
+                    om.sharedMesh = speck ? ShapeMesh.Box(bounds.center, Vector3.one * 0.01f)
+                                  : type == "wheel" ? ShapeMesh.Tyre(bounds.center, size) : ShapeMesh.Box(bounds.center, size);
+                    glb.Own(om.sharedMesh);
+                }
+                // fitted, the game makes its own collider a trigger; the asset's solids go off with it
+                if (speck) go.AddComponent<OffWhenFitted>();
+            }
+            else if (solids.Count == 0 && any)
             {
                 var c = new GameObject("collider") { layer = 8 };
                 c.transform.SetParent(colT, false);
                 var bc = c.AddComponent<BoxCollider>();
                 bc.center = bounds.center; bc.size = bounds.size;
             }
+            var whole = go.AddComponent<BoxCollider>();
+            whole.isTrigger = true;    // what the player looks at to pick it up, as on the game's doors: it never bumps
+            whole.center = bounds.center;
+            // a little larger than everything else on it, so a look always lands on the part itself
+            whole.size = (any ? bounds.size : Vector3.one * 0.3f) + Vector3.one * 0.02f;
 
             // on any car's hinge it hangs by the edge that hinge expects and opens the right way
             var fit = Hinges.FromSpec(spec.TryGetValue("fit", out var f) ? f : true, type);
@@ -291,6 +321,66 @@ namespace Apocars
                     if (proxy.arrayList[i] is GameObject g && (g == null || (previous != null && g == previous && g != template))) proxy.arrayList.RemoveAt(i);
                 if (!proxy.arrayList.Contains(template)) proxy.arrayList.Add(template);
             }
+        }
+    }
+
+    /// On a part whose own collider the game switches when it's fitted: its solids under "colliders" go off while
+    /// it's fitted to a car (a wheel's mustn't touch the ground, an engine's the bay) and come back once it's off.
+    public class OffWhenFitted : MonoBehaviour
+    {
+        private int _fitted = -1;
+        private float _next;
+
+        private void Update()
+        {
+            if (Time.time < _next) return;
+            _next = Time.time + 0.2f;
+            int fitted = CompareTag("vehPart") ? 1 : 0;
+            if (fitted == _fitted) return;
+            _fitted = fitted;
+            var col = transform.Find("colliders");
+            if (col != null) foreach (var c in col.GetComponentsInChildren<Collider>(true)) c.enabled = fitted == 0;
+        }
+    }
+
+    /// Collider shapes made for parts.
+    internal static class ShapeMesh
+    {
+        public static Mesh Box(Vector3 c, Vector3 size)
+        {
+            var e = size / 2f;
+            var v = new Vector3[8];
+            for (int i = 0; i < 8; i++) v[i] = c + Vector3.Scale(e, new Vector3((i & 1) == 0 ? -1 : 1, (i & 2) == 0 ? -1 : 1, (i & 4) == 0 ? -1 : 1));
+            var t = new[] { 0, 2, 1, 1, 2, 3, 4, 5, 6, 5, 7, 6, 0, 1, 4, 1, 5, 4, 2, 6, 3, 3, 6, 7, 0, 4, 2, 2, 4, 6, 1, 3, 5, 3, 7, 5 };
+            return new Mesh { name = "box collider", vertices = v, triangles = t };
+        }
+
+        /// A tyre: a 20-sided cylinder around the box's thinnest side (the axle), as tall as the box's largest side.
+        public static Mesh Tyre(Vector3 c, Vector3 size)
+        {
+            int axle = size.x <= size.y && size.x <= size.z ? 0 : size.y <= size.z ? 1 : 2;
+            int a = (axle + 1) % 3, b = (axle + 2) % 3;
+            float r = Mathf.Max(size[a], size[b]) / 2f, w = size[axle] / 2f;
+            const int n = 20;
+            var v = new List<Vector3>();
+            for (int side = -1; side <= 1; side += 2)
+                for (int i = 0; i < n; i++)
+                {
+                    float ang = i * Mathf.PI * 2f / n;
+                    var p = Vector3.zero;
+                    p[axle] = side * w;
+                    p[a] = Mathf.Cos(ang) * r;
+                    p[b] = Mathf.Sin(ang) * r;
+                    v.Add(c + p);
+                }
+            var t = new List<int>();
+            for (int i = 0; i < n; i++)
+            {
+                int j = (i + 1) % n;
+                t.AddRange(new[] { i, j, n + i, j, n + j, n + i });   // the tread
+                if (i > 0 && j > 0) { t.AddRange(new[] { 0, j, i }); t.AddRange(new[] { n, n + i, n + j }); }   // the sides
+            }
+            return new Mesh { name = "tyre collider", vertices = v.ToArray(), triangles = t.ToArray() };
         }
     }
 }

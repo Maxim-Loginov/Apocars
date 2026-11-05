@@ -197,7 +197,8 @@ def draw_mesh_part(col, context, i, x):
         op = r.operator("apocars.part_box_delete", text="", icon="TRASH")
         op.index, op.which, op.sub = i, "solid", j
     if not x.part_solids:
-        sub.label(text="None: its whole box is used", icon="INFO")
+        sub.label(text="None needed: a tyre the wheel's size, as the game's wheels" if x.kind == "wheel"
+                  else "None: its whole box is used", icon="INFO")
     # physics lock
     sub = col.box().column(align=True)
     r = sub.row(align=True)

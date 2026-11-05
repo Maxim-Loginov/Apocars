@@ -19,7 +19,8 @@ namespace Apocars
         /// when it has the same name (a game material named in a model, a vanilla part's mesh).
         public static readonly HashSet<Object> Ours = new HashSet<Object>();
 
-        private void Own(Object o)
+        /// Made for this model: destroyed with it, never taken for one of the game's own.
+        public void Own(Object o)
         {
             Created.Add(o);
             Ours.Add(o);
