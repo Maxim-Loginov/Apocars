@@ -1,0 +1,1488 @@
+{
+ "vehicles": [
+  "Crossbreed",
+  "Duke",
+  "Halfbreed",
+  "Junker",
+  "Outrider",
+  "PigPen",
+  "PipeRat",
+  "Poloska",
+  "Rustallion",
+  "Rustcargo",
+  "Rustchief",
+  "Rustliner",
+  "Scrapwagon",
+  "TinyTyrant",
+  "Trailer_Big",
+  "Trailer_Small",
+  "Vulture"
+ ],
+ "kinds": {
+  "engine": {
+   "car": "Junker",
+   "part_id": "engine",
+   "variants": [
+    {
+     "hinge": "hinge_engine",
+     "pos": [
+      0,
+      -0.136,
+      1.28
+     ],
+     "rot": [
+      -0.0436194055,
+      0,
+      0,
+      0.9990483
+     ],
+     "offset": null,
+     "spring": null
+    }
+   ],
+   "fit": false
+  },
+  "radiator": {
+   "car": "Poloska",
+   "part_id": "radiator",
+   "variants": [
+    {
+     "hinge": "hinge_radiator",
+     "pos": [
+      -0.2,
+      -0.25,
+      1.35
+     ],
+     "rot": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "offset": null,
+     "spring": null
+    }
+   ],
+   "fit": false
+  },
+  "exhaust": {
+   "car": "Junker",
+   "part_id": "exhaust",
+   "variants": [
+    {
+     "hinge": "hinge_exhaust",
+     "pos": [
+      0,
+      -0.401,
+      0.01
+     ],
+     "rot": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "offset": null,
+     "spring": null
+    }
+   ],
+   "fit": false
+  },
+  "wheel": {
+   "car": "Poloska",
+   "part_id": "wheel",
+   "variants": [
+    {
+     "hinge": "hinge_wheel_FL",
+     "pos": [
+      -0.5638428,
+      -0.425,
+      0.98828125
+     ],
+     "rot": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "offset": null,
+     "spring": 0.2
+    },
+    {
+     "hinge": "hinge_wheel_FR",
+     "pos": [
+      0.5667725,
+      -0.425,
+      0.98828125
+     ],
+     "rot": [
+      -6.123233e-17,
+      1,
+      6.123233e-17,
+      -1.94707184e-07
+     ],
+     "offset": null,
+     "spring": 0.2
+    },
+    {
+     "hinge": "hinge_wheel_RL",
+     "pos": [
+      -0.5638428,
+      -0.425,
+      -0.8405762
+     ],
+     "rot": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "offset": null,
+     "spring": 0.2
+    },
+    {
+     "hinge": "hinge_wheel_RR",
+     "pos": [
+      0.5667725,
+      -0.425,
+      -0.8405762
+     ],
+     "rot": [
+      -6.1232336e-17,
+      1,
+      6.1232336e-17,
+      -7.54979e-08
+     ],
+     "offset": null,
+     "spring": 0.2
+    }
+   ],
+   "fit": false
+  },
+  "gearlever": {
+   "car": "Poloska",
+   "part_id": "gearlever",
+   "variants": [
+    {
+     "hinge": "hinge_gearlever_Joint",
+     "pos": [
+      0.000610351563,
+      -0.435852051,
+      0.425292969
+     ],
+     "rot": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "offset": null,
+     "spring": null
+    }
+   ],
+   "fit": false
+  },
+  "steeringwheel": {
+   "car": "Poloska",
+   "part_id": "steeringwheel",
+   "variants": [
+    {
+     "hinge": "hinge_steeringwheel",
+     "pos": [
+      -0.2659996,
+      0.0846431255,
+      0.4111991
+     ],
+     "rot": [
+      0.258819073,
+      0,
+      0,
+      0.9659259
+     ],
+     "offset": null,
+     "spring": null
+    }
+   ],
+   "fit": false
+  },
+  "radio": {
+   "car": "Poloska",
+   "part_id": "radio",
+   "variants": [
+    {
+     "hinge": "hinge_radio",
+     "pos": [
+      -0.0294,
+      0.0386,
+      0.614
+     ],
+     "rot": [
+      0.140189409,
+      -0.693071,
+      -0.140189245,
+      0.693070352
+     ],
+     "offset": null,
+     "spring": null
+    }
+   ],
+   "fit": false
+  },
+  "seat": {
+   "car": "Poloska",
+   "part_id": "seat",
+   "variants": [
+    {
+     "hinge": "hinge_seat_driver",
+     "pos": [
+      -0.323372632,
+      -0.3750813,
+      0.103826046
+     ],
+     "rot": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "offset": null,
+     "spring": null
+    },
+    {
+     "hinge": "hinge_seat_passenger",
+     "pos": [
+      0.325064868,
+      -0.368344545,
+      0.0996756554
+     ],
+     "rot": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "offset": null,
+     "spring": null
+    },
+    {
+     "hinge": "hinge_seat_rear",
+     "pos": [
+      -0.00354841165,
+      -0.166432619,
+      -0.640070438
+     ],
+     "rot": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "offset": null,
+     "spring": null
+    }
+   ],
+   "fit": false
+  },
+  "door": {
+   "car": "Poloska",
+   "part_id": "door",
+   "variants": [
+    {
+     "hinge": "hinge_door_L",
+     "pos": [
+      -0.624642134,
+      -0.152089357,
+      0.658513546
+     ],
+     "rot": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "offset": [
+      0,
+      0,
+      -0.5127616
+     ],
+     "spring": null
+    },
+    {
+     "hinge": "hinge_door_R",
+     "pos": [
+      0.625846148,
+      -0.152089357,
+      0.658513546
+     ],
+     "rot": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "offset": [
+      0,
+      0,
+      -0.5127616
+     ],
+     "spring": null
+    }
+   ],
+   "fit": true
+  },
+  "trunk": {
+   "car": "Junker",
+   "part_id": "trunk",
+   "variants": [
+    {
+     "hinge": "hinge_trunk",
+     "pos": [
+      0.00573730469,
+      0.289,
+      -1.344
+     ],
+     "rot": [
+      0,
+      0,
+      4.71751443e-25,
+      1
+     ],
+     "offset": [
+      0,
+      -0.1107536,
+      -0.4038026
+     ],
+     "spring": null
+    }
+   ],
+   "fit": true
+  },
+  "hood": {
+   "car": "Poloska",
+   "part_id": "hood",
+   "variants": [
+    {
+     "hinge": "hinge_hood",
+     "pos": [
+      0,
+      -0.03145337,
+      1.43634558
+     ],
+     "rot": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "offset": [
+      0,
+      0.0780232,
+      -0.3330741
+     ],
+     "spring": null
+    }
+   ],
+   "fit": true
+  },
+  "bumper": {
+   "car": "Poloska",
+   "part_id": "bumper",
+   "variants": [
+    {
+     "hinge": "hinge_bumper_front",
+     "pos": [
+      0.00194475241,
+      -0.3601048,
+      1.5007987
+     ],
+     "rot": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "offset": null,
+     "spring": null
+    },
+    {
+     "hinge": "hinge_bumper_rear",
+     "pos": [
+      0.00194475241,
+      -0.43154645,
+      -1.46966028
+     ],
+     "rot": [
+      -6.1232336e-17,
+      1,
+      6.1232336e-17,
+      -7.54979e-08
+     ],
+     "offset": null,
+     "spring": null
+    }
+   ],
+   "fit": false
+  },
+  "window": {
+   "car": "Poloska",
+   "part_id": "windshield",
+   "variants": [
+    {
+     "hinge": "hinge_windshield",
+     "pos": [
+      -0.00183105469,
+      0.327,
+      0.535
+     ],
+     "rot": [
+      -0.366501182,
+      0,
+      0,
+      0.9304176
+     ],
+     "offset": null,
+     "spring": null
+    }
+   ],
+   "fit": false
+  },
+  "roofrack": {
+   "car": "Poloska",
+   "part_id": "roofrack",
+   "variants": [
+    {
+     "hinge": "hinge_roofrack",
+     "pos": [
+      0,
+      0.604,
+      -0.265
+     ],
+     "rot": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "offset": null,
+     "spring": null
+    }
+   ],
+   "fit": false
+  },
+  "headlight": {
+   "car": "Poloska",
+   "part_id": "headlight",
+   "variants": [
+    {
+     "hinge": "hinge_headlight",
+     "pos": [
+      -0.43347168,
+      -0.1330719,
+      1.38305664
+     ],
+     "rot": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "offset": null,
+     "spring": null
+    }
+   ],
+   "fit": false
+  }
+ },
+ "defaults": {
+  "engine": [
+   [
+    0,
+    -0.2,
+    1.05
+   ]
+  ],
+  "radiator": [
+   [
+    0,
+    -0.2,
+    1.4
+   ]
+  ],
+  "exhaust": [
+   [
+    0.3,
+    -0.4,
+    -1.3
+   ]
+  ],
+  "wheel": [
+   [
+    -0.564,
+    -0.525,
+    0.988
+   ],
+   [
+    0.567,
+    -0.525,
+    0.988
+   ],
+   [
+    -0.564,
+    -0.525,
+    -0.841
+   ],
+   [
+    0.567,
+    -0.525,
+    -0.841
+   ]
+  ],
+  "gearlever": [
+   [
+    0.001,
+    -0.436,
+    0.425
+   ]
+  ],
+  "steeringwheel": [
+   [
+    -0.266,
+    0.085,
+    0.411
+   ]
+  ],
+  "radio": [
+   [
+    -0.029,
+    0.039,
+    0.614
+   ]
+  ],
+  "seat": [
+   [
+    -0.323,
+    -0.375,
+    0.104
+   ],
+   [
+    0.325,
+    -0.368,
+    0.1
+   ],
+   [
+    -0.004,
+    -0.166,
+    -0.64
+   ]
+  ],
+  "door": [
+   [
+    -0.625,
+    -0.152,
+    0.659
+   ],
+   [
+    0.626,
+    -0.152,
+    0.659
+   ]
+  ],
+  "trunk": [
+   [
+    0,
+    0.05,
+    -0.95
+   ]
+  ],
+  "hood": [
+   [
+    0,
+    0.0,
+    0.8
+   ]
+  ],
+  "bumper": [
+   [
+    0.002,
+    -0.36,
+    1.501
+   ],
+   [
+    0.002,
+    -0.432,
+    -1.47
+   ]
+  ],
+  "window": [
+   [
+    -0.002,
+    0.327,
+    0.535
+   ]
+  ],
+  "roofrack": [
+   [
+    0,
+    0.604,
+    -0.265
+   ]
+  ],
+  "headlight": [
+   [
+    -0.433,
+    -0.133,
+    1.383
+   ],
+   [
+    0.433,
+    -0.133,
+    1.383
+   ]
+  ],
+  "box:ignition": [
+   [
+    [
+     -0.137,
+     -0.023,
+     0.55
+    ],
+    [
+     0.08,
+     0.06,
+     0.04
+    ]
+   ]
+  ],
+  "box:headlights": [
+   [
+    [
+     -0.012,
+     -0.019,
+     0.546
+    ],
+    [
+     0.06,
+     0.06,
+     0.06
+    ]
+   ]
+  ],
+  "box:driver": [
+   [
+    [
+     -1.49,
+     -0.034,
+     -0.243
+    ],
+    [
+     0.08,
+     1.07,
+     2.46
+    ]
+   ]
+  ],
+  "box:fuel": [
+   [
+    [
+     -0.676,
+     -0.144,
+     -0.473
+    ],
+    [
+     0.2,
+     0.2,
+     0.2
+    ]
+   ]
+  ],
+  "box:physlock": [
+   [
+    [
+     0,
+     -0.016,
+     -0.21
+    ],
+    [
+     1.31,
+     1.13,
+     1.84
+    ]
+   ],
+   [
+    [
+     0.007,
+     -0.225,
+     1.052
+    ],
+    [
+     1.16,
+     0.72,
+     0.72
+    ]
+   ]
+  ],
+  "point:sit": [
+   [
+    -0.293,
+    0.112,
+    -0.053
+   ]
+  ],
+  "point:exit": [
+   [
+    -1.106,
+    0.278,
+    0.129
+   ]
+  ],
+  "steeringcolumn": [
+   [
+    -0.26673,
+    0.04567,
+    0.4798
+   ]
+  ],
+  "switchpanel": [
+   [
+    -0.0835,
+    -0.02192,
+    0.55329
+   ]
+  ],
+  "fueltank": [
+   [
+    -0.23682,
+    -0.48687,
+    -0.58789
+   ]
+  ],
+  "fuelcap": [
+   [
+    -0.67628,
+    -0.14434,
+    -0.47332
+   ]
+  ],
+  "handbrake": [
+   [
+    0.00036,
+    -0.46025,
+    -0.02728
+   ]
+  ],
+  "box:attack": [
+   [
+    [
+     0.00073,
+     -0.2892,
+     1.55961
+    ],
+    [
+     1.06,
+     0.44828,
+     0.40649
+    ]
+   ]
+  ],
+  "box:frontpanel": [
+   [
+    [
+     -0.23364,
+     0.07601,
+     0.60413
+    ],
+    [
+     0.60388,
+     0.11514,
+     0.15845
+    ]
+   ]
+  ],
+  "toolbox": [
+   [
+    0.42126,
+    0.00671,
+    0.48346
+   ]
+  ],
+  "adjuster": [
+   [
+    -0.59803,
+    -0.02491,
+    -0.52679
+   ]
+  ],
+  "point:entry": [
+   [
+    -0.325,
+    -0.308,
+    -0.029
+   ]
+  ],
+  "point:view": [
+   [
+    -0.293,
+    0.362,
+    -0.053
+   ]
+  ],
+  "point:com": [
+   [
+    0,
+    -0.39,
+    0.1
+   ]
+  ]
+ },
+ "controls": {
+  "steering_column": {
+   "pos": [
+    -0.26673,
+    0.04567,
+    0.4798
+   ],
+   "rot": [
+    -0.5,
+    -0.0,
+    -0.0,
+    0.8660254
+   ]
+  },
+  "steering_wheel": {
+   "pos": [
+    -0.266,
+    0.08464,
+    0.4112
+   ],
+   "rot": [
+    0.2588191,
+    0.0,
+    0.0,
+    0.9659259
+   ]
+  },
+  "switch_panel": {
+   "pos": [
+    -0.0835,
+    -0.02192,
+    0.55329
+   ],
+   "rot": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  "fuel_tank": {
+   "pos": [
+    -0.23682,
+    -0.48687,
+    -0.58789
+   ],
+   "rot": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  "fuel_cap": {
+   "pos": [
+    -0.67628,
+    -0.14434,
+    -0.47332
+   ],
+   "rot": [
+    0.0,
+    0.0,
+    0.7071068,
+    0.7071067
+   ]
+  },
+  "drive_trigger": {
+   "pos": [
+    -0.325,
+    -0.308,
+    -0.029
+   ],
+   "rot": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  "sit_pos": {
+   "pos": [
+    -0.293,
+    0.112,
+    -0.053
+   ],
+   "rot": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  "exit_pos": {
+   "pos": [
+    -1.106,
+    0.278,
+    0.129
+   ],
+   "rot": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  "seat_driver": {
+   "pos": [
+    -0.32337,
+    -0.37508,
+    0.10383
+   ],
+   "rot": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  "handbrake": {
+   "pos": [
+    0.00036,
+    -0.46025,
+    -0.02728
+   ],
+   "rot": [
+    0.3420201,
+    0.0,
+    0.0,
+    0.9396927
+   ]
+  },
+  "toolbox": {
+   "pos": [
+    0.42126,
+    0.00671,
+    0.48346
+   ],
+   "rot": [
+    -0.0244849,
+    -0.0008214,
+    0.0335171,
+    0.9991379
+   ]
+  },
+  "adjuster": {
+   "pos": [
+    -0.59803,
+    -0.02491,
+    -0.52679
+   ],
+   "rot": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  "com": {
+   "pos": [
+    0,
+    -0.39,
+    0.1
+   ]
+  },
+  "entry_radius": 0.2
+ },
+ "poloska_box": [
+  [
+   0,
+   0.025,
+   0.015
+  ],
+  [
+   1.32,
+   1.15,
+   3.05
+  ]
+ ],
+ "parts_by_id": {
+  "engine": [
+   "1.2L I4 59HP 87Nm Gasoline",
+   "1.3L v2 55HP 94Nm Gasoline",
+   "11.5L V12 274HP 854Nm Gasoline",
+   "18L V8 335HP 1700Nm Diesel",
+   "2.3L I4 89HP 165Nm Gasoline",
+   "2.8L V6 115HP 183Nm Gasoline",
+   "3.7L I6 145HP 292Nm Gasoline",
+   "3.8L V6 165HP 285Nm Gasoline",
+   "3L I5 87HP 172Nm Diesel",
+   "5.2L V8 230HP 340Nm Gasoline",
+   "5.8L I6 120HP 356Nm Diesel",
+   "594cc I2 23HP 39Nm Gasoline",
+   "7L I6 165HP 542Nm Diesel",
+   "7L V8 355HP 569Nm Gasoline TEST",
+   "7L V8 355HP 569Nm Gasoline",
+   "8.2L V8 400HP 746Nm Gasoline"
+  ],
+  "weapon": [
+   "22_pipe_pistol",
+   "22_pipe_revolver",
+   "22_pipe_smg",
+   "9mm_borz_smg",
+   "akm_drum",
+   "akm_trash",
+   "akms",
+   "blastlance_1",
+   "blastlance_2",
+   "crossbow",
+   "folk_17",
+   "m16a1",
+   "machete",
+   "old_knife",
+   "pipe_wrench",
+   "redmark_m11",
+   "redmark_m11_scoped",
+   "rochester_m24",
+   "rochester_m24_chopped",
+   "shiv",
+   "slamberg_500",
+   "slamberg_500_chopped",
+   "slamfire_shotgun"
+  ],
+  "carcasse": [
+   "Alpha_Nightwalker_Dead",
+   "Arachnid_Dead",
+   "Bat_Dead",
+   "Black_Juggernaut_Dead",
+   "Bodyguard_Dead",
+   "Bolter_Dead",
+   "Boltjaw_Dead",
+   "Burrower_Dead",
+   "Buzzgut_Dead",
+   "Duke_Ironjaw_Dead",
+   "Flexa_Dead",
+   "Grimhound_Dead",
+   "Gunnar_Dead",
+   "Juggernaut_Dead",
+   "Lanky_Dead",
+   "Lugger_Dead",
+   "Lugnut_Dead",
+   "Mechanic_Dead",
+   "Merchant_Dead",
+   "Nightwalker_Dead",
+   "Organic_Mechanic_Dead",
+   "Pistoleer_Dead",
+   "Professor_Dead",
+   "Pup_Dead",
+   "Scorpion_Big_Dead",
+   "Scorpion_King_Dead",
+   "Scraffa_Dead",
+   "Scrud_Dead",
+   "Skinwal_Dead",
+   "Spanna_Dead",
+   "Spider_Big_Dead",
+   "Sprokka_Dead",
+   "Teacher_Dead",
+   "Terror_of_the_Night_Dead",
+   "Wild Hound_Dead",
+   "Yard Hound_Dead",
+   "Zombie_Runner_Dead"
+  ],
+  "diesel_barrel": [
+   "Diesel_Barrel"
+  ],
+  "diesel_can": [
+   "Diesel_Can"
+  ],
+  "gasoline_barrel": [
+   "Gasoline_Barrel"
+  ],
+  "gasoline_can": [
+   "Gasoline_Can"
+  ],
+  "headlight": [
+   "Headlight",
+   "Headlight_2",
+   "Headlight_3"
+  ],
+  "meat": [
+   "Lizard_Dead",
+   "Rat_Dead",
+   "Rat_cooked",
+   "Scorpion_Small_Dead",
+   "Scorpion_Small_cooked",
+   "Spider_Small_Dead",
+   "Spider_Small_cooked",
+   "meat_dog_cooked",
+   "meat_dog_raw",
+   "meat_insect_cooked",
+   "meat_insect_raw",
+   "meat_mutant_cooked",
+   "meat_mutant_raw",
+   "meat_rotten"
+  ],
+  "meat_lizard": [
+   "Lizard_cooked"
+  ],
+  "motoroil_can_small": [
+   "MotorOil_Can_Big",
+   "MotorOil_Can_Small"
+  ],
+  "Repairbox": [
+   "Repairbox_Large",
+   "Repairbox_Medium",
+   "Repairbox_Small"
+  ],
+  "Toolbox": [
+   "Toolbox"
+  ],
+  "wheel": [
+   "UTV_wheel_front_1",
+   "UTV_wheel_rear_1",
+   "motorcycle_wheel",
+   "small_wheel_1",
+   "small_wheel_2",
+   "small_wheel_3",
+   "truck_wheel_1",
+   "truck_wheel_1_armored",
+   "truck_wheel_2",
+   "truck_wheel_2_armored",
+   "truck_wheel_3",
+   "truck_wheel_3_armored",
+   "wheel_1",
+   "wheel_2",
+   "wheel_2_armored",
+   "wheel_3",
+   "wheel_3_armored",
+   "wheel_4",
+   "wheel_4_armored",
+   "wheel_5",
+   "wheel_5_armored"
+  ],
+  "water_barrel": [
+   "Water_Barrel"
+  ],
+  "water_can_plastic": [
+   "Water_Can_Plastic"
+  ],
+  "dogfood_can": [
+   "alcohol_canister",
+   "alcohol_canister_empty",
+   "dogfood_can"
+  ],
+  "ammo": [
+   "ammo_arrow",
+   "ammo_box_12gauge",
+   "ammo_box_20gauge",
+   "ammo_box_22",
+   "ammo_box_3006",
+   "ammo_box_556mm",
+   "ammo_box_762mm",
+   "ammo_box_9mm",
+   "ammo_box_big_12gauge",
+   "ammo_box_big_20gauge",
+   "ammo_box_big_22",
+   "ammo_box_big_3006",
+   "ammo_box_big_556mm",
+   "ammo_box_big_762mm",
+   "ammo_box_big_9mm",
+   "ammo_box_big_arrow"
+  ],
+  "armorplate": [
+   "armorplate"
+  ],
+  "backpack": [
+   "backpack_huge",
+   "backpack_large",
+   "backpack_medium",
+   "backpack_small"
+  ],
+  "bandage": [
+   "bandage_1"
+  ],
+  "bedroll": [
+   "bedroll"
+  ],
+  "binocular": [
+   "binocular"
+  ],
+  "blastlanceexplode": [
+   "blastlance_1_explode",
+   "blastlance_2_explode"
+  ],
+  "bodyarmor": [
+   "bodyarmor_type_0",
+   "bodyarmor_type_1",
+   "bodyarmor_type_2",
+   "bodyarmor_type_3",
+   "bodyarmor_type_4"
+  ],
+  "attachable": [
+   "box_cardboard",
+   "crate_metal",
+   "crate_plastic",
+   "metal_plate_1",
+   "metal_plate_2",
+   "spikes_1",
+   "spikes_2",
+   "spikes_3",
+   "trophy_alpha_nightwalker",
+   "trophy_black_juggernaut",
+   "trophy_buzzgut",
+   "trophy_duke_ironjaw",
+   "trophy_professor",
+   "trophy_scorpion_king",
+   "trophy_terror_of_the_night",
+   "wire_plate"
+  ],
+  "bumper": [
+   "bumper_1",
+   "bumper_10",
+   "bumper_11",
+   "bumper_12",
+   "bumper_13",
+   "bumper_14",
+   "bumper_15",
+   "bumper_16",
+   "bumper_2",
+   "bumper_3",
+   "bumper_4",
+   "bumper_5",
+   "bumper_6",
+   "bumper_7",
+   "bumper_8",
+   "bumper_9",
+   "duke_bumper",
+   "junker_bumper_front",
+   "junker_bumper_rear",
+   "poloska_bumper",
+   "poloska_bumper_2",
+   "rustallion_bumper_front",
+   "rustallion_bumper_rear"
+  ],
+  "cassette": [
+   "cassette_80ssynthwave",
+   "cassette_chill",
+   "cassette_industrialmetal",
+   "cassette_retrosynth",
+   "cassette_whitebat"
+  ],
+  "cigar": [
+   "cigar"
+  ],
+  "bud": [
+   "cigar_bud_item",
+   "cigarette_bud",
+   "joint_bud"
+  ],
+  "cigarette": [
+   "cigarette_bactrian"
+  ],
+  "portable_dew_collector": [
+   "dew_collector_portable"
+  ],
+  "empty_can": [
+   "dogfood_can_empty"
+  ],
+  "door": [
+   "door_car_1_L",
+   "door_car_1_R",
+   "door_car_2_L",
+   "door_car_2_R",
+   "door_truck_1_L",
+   "door_truck_1_R",
+   "door_truck_2_L",
+   "door_truck_2_R",
+   "duke_door_L",
+   "duke_door_R",
+   "junker_door_FL",
+   "junker_door_FR",
+   "junker_door_RL",
+   "junker_door_RR",
+   "poloska_door_L",
+   "poloska_door_R",
+   "rustallion_door_L",
+   "rustallion_door_R",
+   "tinytyrant_door_L",
+   "tinytyrant_door_R"
+  ],
+  "firewall": [
+   "duke_divider",
+   "poloska_firewall",
+   "rustallion_divider"
+  ],
+  "hood": [
+   "duke_hood",
+   "hood_1",
+   "hood_2",
+   "junker_hood",
+   "poloska_hood",
+   "rustallion_hood_1",
+   "rustallion_hood_2",
+   "tinytyrant_hood"
+  ],
+  "seat": [
+   "duke_seat_front",
+   "duke_seat_rear",
+   "poloska_seat_front",
+   "poloska_seat_front_homemade",
+   "poloska_seat_rear",
+   "rustallion_seat_front",
+   "rustallion_seat_rear",
+   "seat_motorcycle"
+  ],
+  "trunk": [
+   "duke_trunk",
+   "junker_trunk",
+   "rustallion_trunk",
+   "trunk_1"
+  ],
+  "exhaust": [
+   "exhaust_buggy",
+   "exhaust_duo",
+   "exhaust_duo_big",
+   "exhaust_motorcycle",
+   "exhaust_quad",
+   "exhaust_quad_big",
+   "exhaust_single",
+   "exhaust_single_big",
+   "exhaust_the_four",
+   "exhaust_the_six",
+   "exhaust_v6",
+   "exhaust_v8",
+   "poloska_exhaust",
+   "rustallion_exhaust_1",
+   "rustallion_exhaust_2",
+   "rustallion_exhaust_3"
+  ],
+  "first_aid": [
+   "first_aid_1"
+  ],
+  "flashlight": [
+   "flashlight1",
+   "flashlight2",
+   "flashlight3"
+  ],
+  "flashlight_batteries": [
+   "flashlight_batteries"
+  ],
+  "portable_gasoline_stove": [
+   "gasoline_stove"
+  ],
+  "gauge": [
+   "gauge_boost_level",
+   "gauge_fuel_level",
+   "gauge_oil_temp",
+   "gauge_rpm",
+   "gauge_speedo",
+   "gauge_water_temp"
+  ],
+  "gearlever": [
+   "gearlever_1",
+   "gearlever_2",
+   "gearlever_3",
+   "gearlever_4",
+   "gearlever_5",
+   "gearlever_6",
+   "gearlever_7",
+   "gearlever_knife",
+   "poloska_gearlever_1",
+   "poloska_gearlever_2",
+   "rustallion_gearlever"
+  ],
+  "grenade": [
+   "grenade"
+  ],
+  "grenadeexplode": [
+   "grenade_explode"
+  ],
+  "maggot_farm_portable": [
+   "maggot_farm_portable"
+  ],
+  "plant_tobacco": [
+   "plant_tobacco"
+  ],
+  "plant_weed": [
+   "plant_weed"
+  ],
+  "enginedoor": [
+   "poloska_door_engine",
+   "tinytyrant_trunk"
+  ],
+  "rearpart": [
+   "poloska_rear_part"
+  ],
+  "steeringwheel": [
+   "poloska_steeringwheel_1",
+   "poloska_steeringwheel_2",
+   "rustallion_steeringwheel",
+   "steeringwheel_1",
+   "steeringwheel_2",
+   "steeringwheel_3",
+   "steeringwheel_4",
+   "steeringwheel_5",
+   "steeringwheel_6",
+   "steeringwheel_7"
+  ],
+  "radiator": [
+   "radiator_medium",
+   "radiator_medium_race",
+   "radiator_motorcycle",
+   "radiator_small",
+   "radiator_truck",
+   "radiator_truck_big",
+   "radiator_truck_ultra",
+   "rustallion_radiator"
+  ],
+  "radio": [
+   "radio_car"
+  ],
+  "roofrack": [
+   "roofrack_small"
+  ],
+  "frontpart": [
+   "rustallion_front"
+  ],
+  "sanitypills": [
+   "sanity_pills"
+  ],
+  "forcedinduction": [
+   "supercharger_1",
+   "supercharger_2",
+   "supercharger_3",
+   "supercharger_4",
+   "supercharger_5",
+   "supercharger_6",
+   "supercharger_7",
+   "supercharger_8",
+   "turbo_bigbrutus",
+   "turbo_doubletrouble",
+   "turbo_littlebee",
+   "turbo_triplethreat",
+   "turbo_warwhistle"
+  ],
+  "suspension": [
+   "suspension_lift_kit"
+  ],
+  "can_light": [
+   "tin_can_light"
+  ],
+  "nuts": [
+   "tin_can_nuts"
+  ],
+  "weed": [
+   "weed_bag"
+  ],
+  "windshield": [
+   "windshield_1_glass",
+   "windshield_2_grid"
+  ]
+ }
+}

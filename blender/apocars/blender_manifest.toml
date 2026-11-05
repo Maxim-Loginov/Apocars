@@ -1,0 +1,18 @@
+schema_version = "1.0.0"
+
+id = "apocars"
+version = "0.9.2"
+name = "Apocars"
+tagline = "Make Apocalypter vehicles and car parts for the Apocars injector"
+maintainer = "Apocars"
+type = "add-on"
+
+tags = ["Import-Export", "Game Engine"]
+
+blender_version_min = "4.2.0"
+
+license = ["SPDX:MIT"]
+
+[permissions]
+files = "Read the game library, write assets into its plugins folder"
+network = "Install UnityPy from PyPI to build the vanilla library"

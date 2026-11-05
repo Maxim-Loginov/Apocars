@@ -1,0 +1,12 @@
+# build output
+runtime/bin/
+runtime/obj/
+dist/
+*.zip
+# built by scripts/make_release.py, shipped in the add-on archive
+blender/apocars/runtime/ApocarsMod.dll
+# Python
+__pycache__/
+*.pyc
+# installed into the add-on folder at run time (UnityPy, CoACD)
+blender/apocars/site/

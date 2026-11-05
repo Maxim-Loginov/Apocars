@@ -1,0 +1,595 @@
+{
+"VEHICLE": {
+"Crossbreed": [
+"CarSpawn",
+"CarSpawn_All",
+"CarSpawn_All (1)",
+"CarSpawn_StarterBase"
+],
+"Duke": [
+"CarSpawn_Unique"
+],
+"Halfbreed": [
+"CarSpawn",
+"CarSpawn_All",
+"CarSpawn_All (1)",
+"CarSpawn_StarterBase"
+],
+"Junker": [
+"CarSpawn",
+"CarSpawn_All",
+"CarSpawn_All (1)",
+"CarSpawn_StarterBase"
+],
+"Outrider": [
+"CarSpawn",
+"CarSpawn_All",
+"CarSpawn_All (1)"
+],
+"PigPen": [
+"CarSpawn",
+"CarSpawn_All",
+"CarSpawn_All (1)"
+],
+"PipeRat": [
+"CarSpawn",
+"CarSpawn_All",
+"CarSpawn_All (1)",
+"CarSpawn_StarterBase"
+],
+"Poloska": [
+"CarSpawn",
+"CarSpawn_All",
+"CarSpawn_All (1)",
+"CarSpawn_StarterBase",
+"CarSpawn_Unique"
+],
+"Rustallion": [
+"CarSpawn_Unique"
+],
+"Rustcargo": [
+"CarSpawn_All",
+"CarSpawn_All (1)"
+],
+"Rustchief": [
+"CarSpawn_All",
+"CarSpawn_All (1)"
+],
+"Rustliner": [
+"CarSpawn_All",
+"CarSpawn_All (1)"
+],
+"Scrapwagon": [
+"TrailerSpawn_All"
+],
+"TinyTyrant": [
+"CarSpawn",
+"CarSpawn_All",
+"CarSpawn_All (1)",
+"CarSpawn_StarterBase"
+],
+"Trailer_Big": [
+"TrailerSpawn",
+"TrailerSpawn_All"
+],
+"Trailer_Small": [
+"TrailerSpawn",
+"TrailerSpawn_All"
+],
+"Vulture": [
+"CarSpawn",
+"CarSpawn_All",
+"CarSpawn_All (1)"
+]
+},
+"PART": {
+"1.2L I4 59HP 87Nm Gasoline": [
+"EngineSpawn_StarterBase",
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"1.3L v2 55HP 94Nm Gasoline": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"11.5L V12 274HP 854Nm Gasoline": [
+"ItemBuySellList",
+"ItemSpawn_Unique",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"18L V8 335HP 1700Nm Diesel": [
+"ItemBuySellList",
+"ItemSpawn_Unique (2)",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"2.3L I4 89HP 165Nm Gasoline": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"2.8L V6 115HP 183Nm Gasoline": [
+"ItemBuySellList",
+"ItemSpawn_Unique",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"22_pipe_pistol": [
+"ItemBuySellList"
+],
+"22_pipe_revolver": [
+"ItemBuySellList"
+],
+"22_pipe_smg": [
+"ItemBuySellList"
+],
+"3.7L I6 145HP 292Nm Gasoline": [
+"ItemBuySellList",
+"ItemSpawn_Unique",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"3.8L V6 165HP 285Nm Gasoline": [
+"ItemBuySellList",
+"ItemSpawn_Unique",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"3L I5 87HP 172Nm Diesel": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"5.2L V8 230HP 340Nm Gasoline": [
+"ItemBuySellList",
+"ItemSpawn_Unique",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"5.8L I6 120HP 356Nm Diesel": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"594cc I2 23HP 39Nm Gasoline": [
+"EngineSpawn_StarterBase",
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"7L I6 165HP 542Nm Diesel": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"7L V8 355HP 569Nm Gasoline": [
+"ItemBuySellList",
+"ItemSpawn_Unique",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"8.2L V8 400HP 746Nm Gasoline": [
+"ItemBuySellList",
+"ItemSpawn_Unique",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"9mm_borz_smg": [
+"ItemBuySellList"
+],
+"akm_drum": [
+"ItemBuySellList"
+],
+"akm_trash": [
+"ItemBuySellList"
+],
+"akms": [
+"ItemBuySellList"
+],
+"alcohol_canister": [
+"ItemBuySellList",
+"OrganicMechanicItemsSpawn_V1",
+"Sell_Items_organic_mechanic"
+],
+"ammo_arrow": [
+"ItemBuySellList"
+],
+"ammo_box_12gauge": [
+"ItemBuySellList",
+"ItemSpawn_Unique_BossRoom"
+],
+"ammo_box_20gauge": [
+"ItemBuySellList"
+],
+"ammo_box_22": [
+"ItemBuySellList"
+],
+"ammo_box_3006": [
+"ItemBuySellList",
+"ItemSpawn_Unique_BossRoom"
+],
+"ammo_box_556mm": [
+"ItemBuySellList",
+"ItemSpawn_Unique_BossRoom"
+],
+"ammo_box_762mm": [
+"ItemBuySellList",
+"ItemSpawn_Unique_BossRoom"
+],
+"ammo_box_9mm": [
+"ItemBuySellList"
+],
+"ammo_box_big_12gauge": [
+"ItemBuySellList"
+],
+"ammo_box_big_3006": [
+"ItemBuySellList"
+],
+"ammo_box_big_556mm": [
+"ItemBuySellList"
+],
+"ammo_box_big_762mm": [
+"ItemBuySellList"
+],
+"armorplate": [
+"ItemBuySellList",
+"ItemSpawn_Unique_BossRoom"
+],
+"backpack_huge": [
+"ItemBuySellList"
+],
+"backpack_large": [
+"ItemBuySellList"
+],
+"backpack_medium": [
+"ItemBuySellList"
+],
+"backpack_small": [
+"ItemBuySellList"
+],
+"bandage_1": [
+"ItemBuySellList",
+"ItemSpawn_StarterBase",
+"OrganicMechanicItemsSpawn_V1",
+"Sell_Items_organic_mechanic"
+],
+"bedroll": [
+"ItemBuySellList"
+],
+"binocular": [
+"ItemBuySellList"
+],
+"blastlance_1": [
+"ItemBuySellList",
+"ItemSpawn_Unique_BossRoom"
+],
+"blastlance_2": [
+"ItemBuySellList",
+"ItemSpawn_Unique_BossRoom"
+],
+"bodyarmor_type_0": [
+"ItemBuySellList"
+],
+"bodyarmor_type_1": [
+"ItemBuySellList"
+],
+"bodyarmor_type_2": [
+"ItemBuySellList"
+],
+"bodyarmor_type_3": [
+"ItemBuySellList"
+],
+"bodyarmor_type_4": [
+"ItemBuySellList"
+],
+"box_cardboard": [
+"CrateSpawn",
+"CrateSpawn (1)",
+"ItemBuySellList"
+],
+"cassette_80ssynthwave": [
+"ItemBuySellList",
+"ItemSpawn_StarterBase"
+],
+"cassette_chill": [
+"ItemBuySellList"
+],
+"cassette_industrialmetal": [
+"ItemBuySellList"
+],
+"cassette_retrosynth": [
+"ItemBuySellList"
+],
+"cassette_whitebat": [
+"ItemBuySellList"
+],
+"cigar": [
+"ItemBuySellList",
+"OrganicMechanicItemsSpawn_V1",
+"Sell_Items_organic_mechanic"
+],
+"cigarette_bactrian": [
+"ItemBuySellList",
+"OrganicMechanicItemsSpawn_V1",
+"Sell_Items_organic_mechanic"
+],
+"crate_metal": [
+"CrateSpawn",
+"CrateSpawn (1)",
+"ItemBuySellList"
+],
+"crate_plastic": [
+"CrateSpawn",
+"CrateSpawn (1)",
+"ItemBuySellList"
+],
+"crossbow": [
+"ItemBuySellList"
+],
+"dew_collector_portable": [
+"ItemBuySellList"
+],
+"dogfood_can": [
+"ItemBuySellList",
+"ItemSpawn_StarterBase"
+],
+"first_aid_1": [
+"ItemBuySellList",
+"OrganicMechanicItemsSpawn_V1",
+"Sell_Items_organic_mechanic"
+],
+"flashlight1": [
+"ItemBuySellList"
+],
+"flashlight2": [
+"ItemBuySellList"
+],
+"flashlight3": [
+"ItemBuySellList"
+],
+"flashlight_batteries": [
+"ItemBuySellList"
+],
+"folk_17": [
+"ItemBuySellList"
+],
+"Gasoline_Can": [
+"ItemSpawn_StarterBase"
+],
+"gasoline_stove": [
+"ItemBuySellList"
+],
+"gauge_oil_temp": [
+"ItemSpawn_StarterBase"
+],
+"gauge_speedo": [
+"ItemSpawn_StarterBase"
+],
+"grenade": [
+"ItemBuySellList",
+"ItemSpawn_Unique_BossRoom"
+],
+"Headlight": [
+"ItemSpawn_StarterBase"
+],
+"m16a1": [
+"ItemBuySellList"
+],
+"machete": [
+"ItemBuySellList"
+],
+"maggot_farm_portable": [
+"ItemBuySellList"
+],
+"MotorOil_Can_Small": [
+"ItemSpawn_StarterBase"
+],
+"old_knife": [
+"ItemBuySellList"
+],
+"pipe_wrench": [
+"ItemBuySellList"
+],
+"plant_tobacco": [
+"ItemBuySellList"
+],
+"plant_weed": [
+"ItemBuySellList"
+],
+"poloska_exhaust": [
+"ItemSpawn_StarterBase"
+],
+"poloska_gearlever_1": [
+"ItemSpawn_StarterBase"
+],
+"poloska_seat_front_homemade": [
+"ItemSpawn_StarterBase"
+],
+"poloska_steeringwheel_1": [
+"ItemSpawn_StarterBase"
+],
+"radiator_medium": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"radiator_medium_race": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"radiator_motorcycle": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"radiator_small": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"radiator_truck": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"radiator_truck_big": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"radiator_truck_ultra": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"radio_car": [
+"ItemBuySellList",
+"ItemSpawn_StarterBase"
+],
+"redmark_m11": [
+"ItemBuySellList"
+],
+"redmark_m11_scoped": [
+"ItemBuySellList"
+],
+"Repairbox_Large": [
+"ItemBuySellList"
+],
+"Repairbox_Medium": [
+"ItemBuySellList",
+"ItemSpawn_StarterBase"
+],
+"Repairbox_Small": [
+"ItemBuySellList"
+],
+"rochester_m24": [
+"ItemBuySellList"
+],
+"rochester_m24_chopped": [
+"ItemBuySellList"
+],
+"rustallion_radiator": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"sanity_pills": [
+"ItemBuySellList",
+"ItemSpawn_Unique_BossRoom",
+"OrganicMechanicItemsSpawn_V1",
+"Sell_Items_organic_mechanic"
+],
+"shiv": [
+"ItemBuySellList",
+"ItemSpawn_StarterBase"
+],
+"slamberg_500": [
+"ItemBuySellList"
+],
+"slamberg_500_chopped": [
+"ItemBuySellList"
+],
+"slamfire_shotgun": [
+"ItemBuySellList"
+],
+"small_wheel_1": [
+"ItemSpawn_StarterBase"
+],
+"small_wheel_2": [
+"ItemSpawn_StarterBase"
+],
+"small_wheel_3": [
+"ItemSpawn_StarterBase"
+],
+"supercharger_1": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"supercharger_2": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"supercharger_3": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"supercharger_4": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"supercharger_5": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"supercharger_6": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"supercharger_7": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"supercharger_8": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"suspension_lift_kit": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"tin_can_light": [
+"ItemBuySellList",
+"ItemSpawn_StarterBase"
+],
+"Toolbox": [
+"ItemBuySellList",
+"ItemSpawn_StarterBase"
+],
+"turbo_bigbrutus": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"turbo_doubletrouble": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"turbo_littlebee": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"turbo_triplethreat": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"turbo_warwhistle": [
+"ItemBuySellList",
+"MechanicItemsSpawn_V1",
+"Sell_Items_mechanic"
+],
+"Water_Can_Plastic": [
+"ItemSpawn_StarterBase"
+],
+"weed_bag": [
+"ItemBuySellList",
+"OrganicMechanicItemsSpawn_V1",
+"Sell_Items_organic_mechanic"
+]
+}
+}
