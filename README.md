@@ -55,7 +55,8 @@ The Test buttons, game mounts, game materials and decorations come from your cop
 3. In Blender, under **Export**, click **Build vanilla library**. It takes a minute or two.
 
 ### 3. Make a car
-**Almost everything has a hintbox when you hover your mouse over it, so check that first if you have any questions!**
+> [!NOTE]
+> **Almost everything has a hintbox when you hover your mouse over it, so check that first if you have any questions!**
 1. **What you're making:** choose **Vehicle**, then give it an ID (letters, digits and `_`), a name and a mod folder. Check that the game folder was found.
 2. **Body:** select your car's mesh, click **Use selected** (the eyedropper), then **Set up**.
 3. **Attachment points:** press **+** on a row to add a point (an engine, a wheel, a door...) and move it into place. **Test** previews a game part on it. For your own doors, hood and so on, select the mesh and use **Make mesh into attachment**.
