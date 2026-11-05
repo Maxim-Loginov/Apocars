@@ -201,6 +201,11 @@ def part_id(s, slot):
     return f"{s.asset_id}_{slot.kind}_{n}"
 
 
+def template_of(slot):
+    """The game's part an attachment made from a mesh works like (its FSMs, sounds, opening)."""
+    return slot.part_template or game.DEFAULT_TEMPLATE.get(game.part_id(slot.kind), "")
+
+
 def write_parts(context, folder):
     """Each attachment made from a mesh as a part of its own: <folder>/<car id>_<kind>_<n>.glb + .lua."""
     from .export import entry, lua_value
@@ -250,12 +255,19 @@ def write_parts(context, folder):
                  f"  name = {lua_value(s.display_name + ' ' + title.rstrip('s').lower())},",
                  f"  model = {lua_value(os.path.basename(glb))},",
                  f"  type = {lua_value(game.part_id(slot.kind))},",
-                 f"  template = {lua_value(slot.part_template or game.DEFAULT_TEMPLATE.get(game.part_id(slot.kind), ''))},",
+                 f"  template = {lua_value(template_of(slot))},",
                  f"  for_car = {lua_value(s.asset_id)},",
                  f"  slot = {lua_value(slot.obj.name)},",
                  "  boxes = {"] + ["    " + entry(e) + "," for e in entries] + [
-                 "  },",
-                 "}"]
+                 "  },"]
+        # where it spawns: like the game's part it works like (or another item), and the lists ticked
+        like = template_of(slot) if slot.part_spawn_vanilla else slot.part_spawn_like.strip()
+        if like:
+            lines.append(f"  spawn_like = {lua_value(like)},")
+        lines.append("  spawn = {")
+        lines += ["    " + entry({"table": y.table, "weight": y.weight}) + ","
+                  for y in slot.part_spawns if y.table in game.SPAWN_INFO and game.SPAWN_INFO[y.table][2] == "PART"]
+        lines += ["  },", "}"]
         with open(lua, "w", encoding="utf-8") as f:
             f.write("\n".join(lines) + "\n")
         written.append(pid)
@@ -278,6 +290,9 @@ def release(slot):
         del mesh[ROLE]
     slot.part_mesh = None
     slot.part_template = ""
+    slot.part_spawns.clear()
+    slot.part_spawn_vanilla = True
+    slot.part_spawn_like = ""
 
 
 classes = (APOCARS_OT_mesh_to_part, APOCARS_OT_part_box, APOCARS_OT_part_box_delete)

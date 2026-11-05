@@ -804,6 +804,7 @@ class APOCARS_OT_spawn_toggle(bpy.types.Operator):
     bl_label = "Spawn list"
     bl_options = {"REGISTER", "UNDO"}
     table: StringProperty()
+    slot: IntProperty(default=-1, options={"HIDDEN"})   # an attachment made from a mesh: its own lists
 
     @classmethod
     def description(cls, context, props):
@@ -812,11 +813,12 @@ class APOCARS_OT_spawn_toggle(bpy.types.Operator):
 
     def execute(self, context):
         s = S(context)
-        for i, x in enumerate(s.spawns):
+        spawns = s.slots[self.slot].part_spawns if 0 <= self.slot < len(s.slots) else s.spawns
+        for i, x in enumerate(spawns):
             if x.table == self.table:
-                s.spawns.remove(i)
+                spawns.remove(i)
                 return {"FINISHED"}
-        s.spawns.add().table = self.table
+        spawns.add().table = self.table
         return {"FINISHED"}
 
 

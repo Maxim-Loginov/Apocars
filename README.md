@@ -30,7 +30,7 @@ The mod itself is needed for hot reload and extracting game files for you to use
 - **Colliders from a mesh** with [CoACD](https://github.com/SarahWeiii/CoACD) convex decomposition. Choose how many pieces (70–120 suits a car body). CoACD runs in the background and installs itself the first time.
 - **Driver's view preview.** Look through the driver's eyes with the game's field of view, then exit back to where you were.
 - **Lifted suspension.** A slot for the game's lift kit, with a stock and a lifted suspension mesh. The stock mesh shows until the kit is fitted, then the lifted one takes its place. The lifted travel, damping, height and track width are set under Properties → Suspension.
-- **Make mesh into attachment.** Turn a selected mesh into a door, hood, bumper or other part, with its own collision and physics-lock sections.
+- **Make mesh into attachment.** Turn a selected mesh into a door, hood, bumper or other part, with its own collision, physics-lock and spawn sections. By default it spawns wherever the game's part it works like spawns; you can pick another game item to spawn like, and add spawn lists of its own.
 - **Light exports:**
   - game materials carry no pictures, because the game uses its own;
   - your own pictures are saved once in a shared `textures/` folder, however many parts use them.

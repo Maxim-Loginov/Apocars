@@ -168,6 +168,7 @@ class APOCARS_PT_attach(Step):
 
 
 def draw_mesh_part(col, context, i, x):
+    from . import meshparts
     from .colliders import RUNNING
     title = dict(game.KINDS).get(x.kind, x.kind)
     r = col.row(align=True)
@@ -211,6 +212,37 @@ def draw_mesh_part(col, context, i, x):
         r.prop(b, "show", text="", icon="HIDE_OFF" if b.show else "HIDE_ON")
         op = r.operator("apocars.part_box_delete", text="", icon="TRASH")
         op.index, op.which, op.sub = i, "lock", j
+    # where it spawns
+    sub = col.box().column(align=True)
+    sub.label(text="Spawn", icon="WORLD")
+    template = meshparts.template_of(x)
+    sub.prop(x, "part_spawn_vanilla", text=f"Like the game's {template}" if template else "Like the game's part")
+    like = template if x.part_spawn_vanilla else x.part_spawn_like.strip()
+    if not x.part_spawn_vanilla:
+        sub.prop(x, "part_spawn_like", icon="DUPLICATE")
+    if like:
+        lists = game.spawn_like("PART").get(like)
+        hint = sub.row()
+        hint.enabled = False
+        if lists:
+            hint.label(text="In: " + ", ".join(sorted({l.split(" (")[0] for l in lists})), icon="INFO")
+        else:
+            hint.label(text=f"{like} is in no spawn list: world loot only, as it is", icon="INFO")
+    sub.separator()
+    sub.label(text="And these lists:" if like else "These lists:")
+    on = {y.table: y for y in x.part_spawns}
+    for tid, label, mode, _ in game.SPAWN_TABLES:
+        if mode != "PART":
+            continue
+        r = sub.row(align=True)
+        op = r.operator("apocars.spawn_toggle", text=label, emboss=False,
+                        icon="CHECKBOX_HLT" if tid in on else "CHECKBOX_DEHLT")
+        op.table, op.slot = tid, i
+        if tid in on:
+            r.prop(on[tid], "weight", text="")
+    r = sub.row()
+    r.enabled = False
+    r.label(text="World loot: always (the game's item list)", icon="INFO")
 
 
 def draw_kind(col, context, kind):

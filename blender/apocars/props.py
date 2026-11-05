@@ -115,6 +115,11 @@ def _suspension_mesh(self, o):
     return o.type in {"MESH", "EMPTY"} and o.get("apocars") is None
 
 
+def _part_spawn_like_search(self, context, edit_text):
+    t = edit_text.lower()
+    return [n for n in game.spawn_like("PART") if t in n.lower()][:300]
+
+
 def lift_props(prefix, many):
     """The lifted suspension's settings (used once the game's lift kit is fitted): on a wheel, or for all of them."""
     w = "wheels" if many else "wheel"
@@ -160,6 +165,14 @@ class ApocarsSlot(bpy.types.PropertyGroup):
     absorption: FloatProperty(name="Absorption", default=3000.0, min=0.0, max=100000.0, step=1000,
                               description="The damper's rate (bump and rebound): higher settles bounces sooner, "
                                           "lower lets the car float (the game's cars: 3000)")
+    part_spawn_vanilla: BoolProperty(
+        name="Like the game's part", default=True,
+        description="Spawn wherever the game's part it works like spawns (in every spawn list that has it, as often as "
+                    "it is there). Off: like another item of your choice, or only the lists ticked below")
+    part_spawn_like: StringProperty(
+        name="Spawn like", search=_part_spawn_like_search,
+        description="Pick one of the game's items: this attachment is put in every spawn list that has it, as often as "
+                    "it is there. Empty: only the lists ticked below")
     stock_mesh: PointerProperty(type=bpy.types.Object, name="Stock suspension", poll=_suspension_mesh,
                                 description="The stock suspension: shown until the game's lift kit is fitted here, hidden "
                                             "while it is. An object of your model (its children go with it)")
@@ -289,6 +302,7 @@ for _k, _v in {**diff_props("diff_axle", "OPEN", "axle differential (between the
 # an attachment made from a mesh has colliders and a physics lock of its own
 ApocarsSlot.__annotations__["part_solids"] = CollectionProperty(type=ApocarsSolid)
 ApocarsSlot.__annotations__["part_locks"] = CollectionProperty(type=ApocarsBox)
+ApocarsSlot.__annotations__["part_spawns"] = CollectionProperty(type=ApocarsSpawn)   # its own spawn lists
 
 def _set_own(self, v):
     """Kept as it is: no longer the game's material in game."""
@@ -299,7 +313,7 @@ def _set_own(self, v):
             del self["vanilla"]
 
 
-classes = (ApocarsBox, ApocarsSolid, ApocarsSlot, ApocarsSpawn, ApocarsDecor, ApocarsSettings)
+classes = (ApocarsBox, ApocarsSolid, ApocarsSpawn, ApocarsSlot, ApocarsDecor, ApocarsSettings)
 
 
 def register():
