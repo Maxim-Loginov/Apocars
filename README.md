@@ -2,7 +2,7 @@
 
 # Apocars
 
-**Make your own vehicles and car parts for Apocalypter in Blender and drive them in game.**
+**Make your own vehicles and car parts for Apocalypter and then export them as standalone mods.**
 
 Apocars has two halves:
 
@@ -10,7 +10,7 @@ Apocars has two halves:
 - **The Blender add-on** (`blender/apocars/`) walks you through making one, step by step. It exports the model straight into the game, where the car rebuilds in about a second while you play.
 
 > [!NOTE]
-> Apocars is an unofficial fan mod. It ships no game files. Everything it takes from the game (parts, meshes, materials) is read from your own installed copy.
+> Apocars is simply a tool, and is still in development. For a proper use Apocasetter and Blender 5.0+ are needed. Contact me in Discord (internet_gremlin) if you want some feature or if something breaks (but using GitHub is a preferred method)
 
 ---
 
@@ -18,26 +18,7 @@ Apocars has two halves:
 
 ### In game (the mod)
 
-- **Real game vehicles underneath.** Every car is built on a vanilla one, with its systems, FSMs and IDs. Driving, fuel, damage, part fitting, the radio and headlights all work the way the game does them.
-- **Hot reload.** Save from Blender while the game is running, and the car is rebuilt within a second. Copies already in the world respawn where they stand and keep their fitted parts. A car you're sitting in waits until you get out.
-- **Attachment points for every game part:** engine, radiator, exhaust, wheels, gear lever, steering column with steering wheel, switch panel (ignition and headlights), handbrake, fuel cap, radio, seats, doors, trunk, hood, bumpers, windows, roof rack, headlights, toolbox and part adjuster. Engine, radiator and exhaust mounts, wheel hubs, the steering column and the switch panel use the game's own meshes.
-- **Doors, hoods and trunk lids hinge like the game's.** Any fitted door is measured and hung on its hinge edge, and it opens the right way.
-- **Your own parts.** Any mesh can become a part of its own, such as a door, hood or bumper. You can take it off, carry it and fit it again, and it has its own colliders and physics lock. It doesn't collide while you hold it.
-- **Collision:**
-  - solid boxes, and meshes split into convex pieces;
-  - the driver's seat, with separate sit, view and exit spots;
-  - the dashboard (where gauges fit);
-  - ram damage, which hurts enemies you drive into;
-  - physics lock, which holds items dropped in the bed;
-  - centre of mass.
-- **Drivetrain:**
-  - power and steering per wheel, including reversed steering for rear-steer;
-  - suspension travel, stiffness and absorption, either for each wheel or for all at once;
-  - differentials: open, locked or limited slip, for each axle and between axles;
-  - fuel tank size.
-- **Spawning.** Your vehicle can appear wherever a chosen game vehicle appears ("spawn like Poloska"). You can also pick spawn lists yourself: camps, bigger camps, the starter base, unique spots, trailers, and merchant, mechanic and medic stock.
-- **Game materials.** Name a material after a game material, or pick one in the add-on, and the game's own material is used.
-- **A report for every build** in `BepInEx/Apocars-<id>.txt`, listing anything that didn't fit.
+The mod itself is needed for hot reload and extracting game files for you to use in Blender. Also has a couple of debugging features, but any other mod that spawns items is recommended.
 
 ### In Blender (the add-on)
 
@@ -69,7 +50,7 @@ Apocars has two halves:
 The Test buttons, game mounts, game materials and decorations come from your copy of the game.
 
 1. Start the game and load a save.
-2. In `BepInEx/config/com.apocalypter.apocars.cfg`, set `Tools.DumpVanilla = true`, or switch it on from an in-game config manager. Apocars writes the game's vehicles and parts to `BepInEx/Apocars-vanilla` and switches the option back off.
+2. In `BepInEx/config/com.apocalypter.apocars.cfg`, set `Tools.DumpVanilla = true`, or switch it on in Apocasetter. Apocars writes the game's vehicles and parts to `BepInEx/Apocars-vanilla` and switches the option back off.
 3. In Blender, under **Export**, click **Build vanilla library**. It takes a minute or two.
 
 ### 3. Make a car
@@ -85,7 +66,7 @@ The Test buttons, game mounts, game materials and decorations come from your cop
 6. **Export:**
    - **Hot export** writes the car into the game. If the game is running, the car appears or rebuilds within a second.
    - To spawn one in front of you, set `Tools.Spawn` in the config to your car's ID.
-   - **Build mod** makes a standalone mod and a zip to share.
+   - **Build mod** makes a standalone mod and a zip to share. [!NOTE]**YOU  DO NOT NEED TO LIST THIS MOD AS A DEPENDENCY. THAT IS THE WHOLE POINT. IT IS THE INTENDED WAY FOR YOU TO SHARE VEHICLES**
 
 Parts are made the same way: choose **Attachment** in the first step.
 
