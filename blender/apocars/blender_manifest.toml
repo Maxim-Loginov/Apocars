@@ -1,7 +1,7 @@
 schema_version = "1.0.0"
 
 id = "apocars"
-version = "0.9.2"
+version = "0.9.3"
 name = "Apocars"
 tagline = "Make Apocalypter vehicles and car parts for the Apocars injector"
 maintainer = "Apocars"

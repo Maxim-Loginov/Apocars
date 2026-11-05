@@ -18,6 +18,8 @@ TEMPLATES = {   # kind -> (car, [hinges]) : keep in step with Assembler.Template
     "door": ("Poloska", ["hinge_door_L", "hinge_door_R"]), "trunk": ("Junker", ["hinge_trunk"]), "hood": ("Poloska", ["hinge_hood"]),
     "bumper": ("Poloska", ["hinge_bumper_front", "hinge_bumper_rear"]), "window": ("Poloska", ["hinge_windshield"]),
     "roofrack": ("Poloska", ["hinge_roofrack"]), "headlight": ("Poloska", ["hinge_headlight"]),
+    # the lift kit's slot (hinge_suspension, under hinge_suspension_parent): suspension_lift_kit fits on it
+    "suspension": ("Poloska", ["hinge_suspension_parent/hinge_suspension"]),
 }
 # the part IDs (vehPart_Attach compareTo) each kind takes
 PART_IDS = {"window": "windshield"}
@@ -30,6 +32,7 @@ DEFAULTS = {
     "door": [(-0.625, -0.152, 0.659), (0.626, -0.152, 0.659)], "trunk": [(0, 0.05, -0.95)], "hood": [(0, 0.0, 0.8)],
     "bumper": [(0.002, -0.36, 1.501), (0.002, -0.432, -1.47)], "window": [(-0.002, 0.327, 0.535)],
     "roofrack": [(0, 0.604, -0.265)], "headlight": [(-0.433, -0.133, 1.383), (0.433, -0.133, 1.383)],
+    "suspension": [(-0.001, -0.528, 1.092)],
     # boxes: centre and size
     "box:ignition": [((-0.137, -0.023, 0.55), (0.08, 0.06, 0.04))], "box:headlights": [((-0.012, -0.019, 0.546), (0.06, 0.06, 0.06))],
     "box:driver": [((-1.49, -0.034, -0.243), (0.08, 1.07, 2.46))], "box:fuel": [((-0.676, -0.144, -0.473), (0.2, 0.2, 0.2))],
@@ -138,10 +141,13 @@ def main():
         root = cars[car]["root"]
         variants = []
         for h in hinges:
-            node = next((n for n in root["children"] if n["name"] == h), None)
+            node = root
+            for name in h.split("/"):
+                node = next((n for n in node["children"] if n["name"] == name), None) if node else None
             if node is None:
                 continue
-            variants.append({"hinge": h, "pos": node["pos"], "rot": node["rot"], "offset": attach_offset(node), "spring": spring(node)})
+            pos, rot = root_relative(root, h) if "/" in h else (node["pos"], node["rot"])
+            variants.append({"hinge": h.split("/")[-1], "pos": pos, "rot": rot, "offset": attach_offset(node), "spring": spring(node)})
         kinds[kind] = {"car": car, "part_id": PART_IDS.get(kind, kind), "variants": variants, "fit": kind in ("door", "hood", "trunk")}
 
     poloska = cars["Poloska"]["root"]

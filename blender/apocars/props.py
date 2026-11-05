@@ -111,6 +111,30 @@ def _part_show(self, context):
         b.show = self.show_colliders
 
 
+def _suspension_mesh(self, o):
+    return o.type in {"MESH", "EMPTY"} and o.get("apocars") is None
+
+
+def lift_props(prefix, many):
+    """The lifted suspension's settings (used once the game's lift kit is fitted): on a wheel, or for all of them."""
+    w = "wheels" if many else "wheel"
+    return {
+        f"{prefix}travel": FloatProperty(
+            name="Travel", default=0.3, min=0.02, max=1.5, unit="LENGTH", precision=3,
+            description=f"Lifted: how far the {w} move up and down. Longer travel also lifts the car (the game's cars: 0.3 m, from 0.2)"),
+        f"{prefix}absorption": FloatProperty(
+            name="Absorption", default=1500.0, min=0.0, max=100000.0, step=1000,
+            description="Lifted: the dampers' rate (bump and rebound). The game's lifted cars are softer (the Poloska: 1500, from 3000)"),
+        f"{prefix}height": FloatProperty(
+            name="Lift", default=0.0, min=-0.5, max=1.0, unit="LENGTH", precision=3,
+            description=f"Lifted: how much lower the {w} sit on their mounts, raising the car by as much, on top of the longer "
+                        "travel (the game's big cars: up to 0.26 m)"),
+        f"{prefix}wider": FloatProperty(
+            name="Wider", default=0.2, min=-0.5, max=1.0, unit="LENGTH", precision=3,
+            description=f"Lifted: how far out the {w} move on each side, for a wider track (the game's cars: 0.2-0.26 m)"),
+    }
+
+
 class ApocarsSlot(bpy.types.PropertyGroup):
     kind: StringProperty()
     label: StringProperty()
@@ -136,6 +160,12 @@ class ApocarsSlot(bpy.types.PropertyGroup):
     absorption: FloatProperty(name="Absorption", default=3000.0, min=0.0, max=100000.0, step=1000,
                               description="The damper's rate (bump and rebound): higher settles bounces sooner, "
                                           "lower lets the car float (the game's cars: 3000)")
+    stock_mesh: PointerProperty(type=bpy.types.Object, name="Stock suspension", poll=_suspension_mesh,
+                                description="The stock suspension: shown until the game's lift kit is fitted here, hidden "
+                                            "while it is. An object of your model (its children go with it)")
+    lifted_mesh: PointerProperty(type=bpy.types.Object, name="Lifted suspension", poll=_suspension_mesh,
+                                 description="The lifted suspension: hidden until the game's lift kit is fitted here, shown "
+                                             "while it is. Model it as it sits lifted (see Properties > Suspension > Lifted)")
 
 
 class ApocarsBox(bpy.types.PropertyGroup):
@@ -248,6 +278,10 @@ def _vanilla_update(self, context):
         del self["vanilla"]
 
 
+for _k, _v in lift_props("lift_", False).items():
+    ApocarsSlot.__annotations__[_k] = _v
+for _k, _v in lift_props("susp_lift_", True).items():
+    ApocarsSettings.__annotations__[_k] = _v
 for _k, _v in {**diff_props("diff_axle", "OPEN", "axle differential (between the two wheels of a powered axle)"),
                **diff_props("diff_center", "LOCKED", "centre differential (between powered axles)")}.items():
     ApocarsSettings.__annotations__[_k] = _v

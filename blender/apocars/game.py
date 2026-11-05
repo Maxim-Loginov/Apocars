@@ -12,7 +12,8 @@ _decor = None
 
 # the attachment kinds, in the order the panel lists them, with what the user calls them
 KINDS = [
-    ("engine", "Engine"), ("radiator", "Radiator"), ("exhaust", "Exhaust"), ("wheel", "Wheels"), ("gearlever", "Shift lever"),
+    ("engine", "Engine"), ("radiator", "Radiator"), ("exhaust", "Exhaust"), ("wheel", "Wheels"), ("suspension", "Lifted suspension"),
+    ("gearlever", "Shift lever"),
     ("steeringwheel", "Steering column"), ("switchpanel", "Switch panel"), ("handbrake", "Handbrake"), ("fuelcap", "Fuel cap"),
     ("toolbox", "Toolbox"), ("adjuster", "Part adjuster"),
     ("radio", "Radio"), ("seat", "Seats"), ("door", "Doors"), ("trunk", "Trunk"),
@@ -301,6 +302,11 @@ HELP = {
              "Power: the engine drives this wheel (through a differential). Steering: it turns with the steering wheel. "
              "Travel, stiffness and absorption are in Properties > Suspension",
     "gearlever": "The shift lever's place",
+    "suspension": "The slot the game's lift kit (suspension_lift_kit) is fitted to, as on the game's cars. Fitted, "
+                  "the car switches to its lifted suspension: longer travel, softer, wheels further out (set in Properties > "
+                  "Suspension > Lifted).\nStock suspension: shown until the kit is fitted, then hidden. Lifted suspension: "
+                  "hidden until it's fitted, then shown. Pick objects of your model (or game ones from Decorative > Import "
+                  "game car part). Without this point the slot goes between the front wheels",
     "steeringwheel": "The game's steering column, with the steering wheel's point at its end. Moving or turning the "
                      "column takes the point along; move the point itself to set where the wheel sits. Pick an object "
                      "instead to have no column (the point alone)",

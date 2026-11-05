@@ -52,6 +52,19 @@ def problems(context):
             warnings.append("no switch panel: its switches work by the steering wheel, unseen")
         if "com" not in boxes:
             warnings.append("no centre of mass: the Poloska's, moved to this body")
+        exported = set(objects_to_export(context))
+        for x in have["suspension"]:
+            for what, o in (("stock", x.stock_mesh), ("lifted", x.lifted_mesh)):
+                if o is None:
+                    continue
+                if o == s.body:
+                    errors.append(f"lifted suspension: the {what} suspension can't be the whole body")
+                elif o not in exported:
+                    errors.append(f"lifted suspension: '{o.name}' isn't part of the model (parent it to the root)")
+            if x.stock_mesh is not None and x.stock_mesh == x.lifted_mesh:
+                errors.append("lifted suspension: stock and lifted are the same object")
+            if x.lifted_mesh is None:
+                warnings.append("lifted suspension: no lifted mesh (the car looks the same with the lift kit)")
     else:
         if not s.part_type:
             errors.append("no part type")
@@ -138,6 +151,11 @@ def spec(context, model):
                 e["travel"] = src.susp_travel if s.susp_universal else x.travel
                 e["stiffness"] = src.susp_stiffness if s.susp_universal else x.stiffness
                 e["absorption"] = src.susp_absorption if s.susp_universal else x.absorption
+                for k in ("travel", "absorption", "height", "wider"):   # lifted: once the lift kit is fitted
+                    e["lift_" + k] = round(getattr(s, "susp_lift_" + k) if s.susp_universal else getattr(x, "lift_" + k), 4)
+            if x.kind == "suspension":
+                e["stock_mesh"] = x.stock_mesh.name if x.stock_mesh is not None else None
+                e["lifted_mesh"] = x.lifted_mesh.name if x.lifted_mesh is not None else None
             if x.kind == "steeringwheel" and x.column is not None:
                 e["column"] = x.column.name
             lines.append("    " + entry(e) + ",")

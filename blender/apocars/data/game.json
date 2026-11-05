@@ -491,6 +491,29 @@
     }
    ],
    "fit": false
+  },
+  "suspension": {
+   "car": "Poloska",
+   "part_id": "suspension",
+   "variants": [
+    {
+     "hinge": "hinge_suspension",
+     "pos": [
+      -0.00146,
+      -0.5276,
+      1.09204
+     ],
+     "rot": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+     ],
+     "offset": null,
+     "spring": null
+    }
+   ],
+   "fit": false
   }
  },
  "defaults": {
@@ -637,6 +660,13 @@
     0.433,
     -0.133,
     1.383
+   ]
+  ],
+  "suspension": [
+   [
+    -0.001,
+    -0.528,
+    1.092
    ]
   ],
   "box:ignition": [

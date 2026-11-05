@@ -242,6 +242,10 @@ def draw_kind(col, context, kind):
                 if x.preview:
                     r.operator("apocars.slot_untest", text="", icon="X").index = i
         r.operator("apocars.slot_delete", text="", icon="TRASH").index = i
+        if kind == "suspension":
+            sub = col.column(align=True)
+            sub.prop(x, "stock_mesh", text="Stock", icon="HIDE_ON")
+            sub.prop(x, "lifted_mesh", text="Lifted", icon="HIDE_OFF")
 
 
 # ------------------------------------------------------------------ 5. collision boxes
@@ -411,6 +415,24 @@ class APOCARS_PT_props(Step):
                 r.prop(x, "travel", text="Travel")
                 r.prop(x, "stiffness", text="Stiff")
                 r.prop(x, "absorption", text="Absorb")
+        # the lifted suspension: what the wheels get once the game's lift kit is fitted
+        col.separator()
+        r = col.row()
+        r.label(text="Lifted", icon="TRIA_UP_BAR")
+        if not any(x.kind == "suspension" and x.obj is not None for x in s.slots):
+            r.label(text="slot between the front wheels")
+        if s.susp_universal:
+            g = col.grid_flow(columns=2, align=True)
+            for p in ("travel", "absorption", "height", "wider"):
+                g.prop(s, "susp_lift_" + p)
+        elif wheels:
+            for x in wheels:
+                col.label(text=(x.label or "wheel").capitalize() + ", lifted")
+                r = col.row(align=True)
+                r.prop(x, "lift_travel", text="Travel")
+                r.prop(x, "lift_absorption", text="Absorb")
+                r.prop(x, "lift_height", text="Lift")
+                r.prop(x, "lift_wider", text="Wider")
 
         col = self.layout.box().column(align=True)
         col.label(text="Differentials", icon="DRIVER")

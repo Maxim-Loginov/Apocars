@@ -45,6 +45,7 @@ namespace Apocars
             ["handbrake"] = "handbrake",             // pulled and released by clicking it (or the handbrake key)
             ["toolbox"] = "parts/toolset_1",         // the toolset (repairs): used with F
             ["adjuster"] = "parts/toolset_2",        // the part adjuster toolset: used with F
+            ["suspension"] = "hinge_suspension_parent", // the lift kit's slot: fitted, the lifted suspension shows
         };
         private const string SwitchPanel = "switchpanel";
 
@@ -140,6 +141,7 @@ namespace Apocars
                 if (kind == "wheel") SetSuspension(node, a);
                 string name = Name(kind, hingeName, m.Pos, used);
                 PlaceHinge(node, kind, name, m, a, res);
+                if (kind == "wheel") SetLiftStates(node, a, res);
                 var src = rb.Load(tpl.car + "/" + name, doc);
                 var go = rb.Create(src, node, car);
                 go.name = name;
@@ -158,6 +160,12 @@ namespace Apocars
             var body = new GameObject("body");
             body.transform.SetParent(car, false);
             body.layer = 8;
+            var liftKit = attach.FirstOrDefault(x => Json.Str(x, "kind") == "suspension");
+            var suspNames = new Dictionary<string, string>();   // node -> "stock" / "lifted"
+            if (liftKit != null)
+                foreach (var v in new[] { "stock", "lifted" })
+                    if (Json.Str(liftKit, v + "_mesh") is string sn && sn.Length > 0) suspNames[sn] = v;
+            var suspParts = new List<(Transform t, string variant)>();
             foreach (var n in glb.Nodes)
             {
                 if (n.Object == null || n.Mesh < 0) continue;
@@ -169,6 +177,8 @@ namespace Apocars
                 var copy = new GameObject(n.Name);
                 copy.layer = 8;
                 copy.transform.SetParent(body.transform, false);
+                for (var up = n; up != null; up = up.Parent)
+                    if (suspNames.TryGetValue(up.Name, out var variant)) { suspParts.Add((copy.transform, variant)); break; }
                 var mk = markers[n.Name];
                 copy.transform.localPosition = mk.Origin;
                 copy.transform.localRotation = mk.Rot;
@@ -181,6 +191,7 @@ namespace Apocars
                 r.sharedMaterials = mr.sharedMaterials;
             }
             var bounds = BodyBounds(car, body.transform);
+            LiftKitMeshes(car, suspParts, res);
 
             // ---- colliders, functional boxes and the skeleton's parts put in place
             Solids(car, boxes, markers, res);
@@ -195,6 +206,19 @@ namespace Apocars
             Object.Destroy(model);
             res.Root = rootGo;
             return res;
+        }
+
+        /// The asset's stock and lifted suspension meshes into the car's suspension_model (its first child is the stock
+        /// suspension, its second the lifted one, "lifted" or "buggy"): the car's checkSuspension FSM shows one and
+        /// hides the other as the lift kit comes off and goes on.
+        private static void LiftKitMeshes(Transform car, List<(Transform t, string variant)> parts, Result res)
+        {
+            if (parts.Count == 0) return;
+            var model = car.Find("suspension_model");
+            if (model == null || model.childCount < 2) { res.Problems.Add("lifted suspension: the skeleton car has no suspension_model to put the meshes in"); return; }
+            var stock = model.Find("stock") ?? model.GetChild(0);
+            var lifted = model.Find("lifted") ?? model.Find("buggy") ?? model.GetChild(1);
+            foreach (var (t, variant) in parts) t.SetParent(variant == "lifted" ? lifted : stock, true);
         }
 
         private static bool AncestorListed(Gltf.Node n, List<string> names)
@@ -373,6 +397,69 @@ namespace Apocars
                     damper["reboundRate"] = v;
                 }
             }
+        }
+
+        /// A wheel's two suspensions, as its Suspension FSM switches them when the lift kit goes on or off (the car's
+        /// checkSuspension FSM sends Activate or Deactivate): stock, the wheel's own settings (the FSM sets them again as
+        /// the car spawns, so they're written into it); lifted, the asset's lift_* settings or, where it has none, the
+        /// skeleton car's change from stock to lifted on top of the wheel's own (longer travel, softer, wider and lower).
+        private static void SetLiftStates(Dictionary<string, object> node, Dictionary<string, object> a, Result res)
+        {
+            var actions = FsmEdit.Actions(node, "Suspension").ToList();
+            if (actions.Count == 0) return;
+            float travel = SpringLength(node), bump = Damper(node, "bumpRate"), rebound = Damper(node, "reboundRate");
+            float? vStockTravel = null, vLiftTravel = null, vStockDamp = null, vLiftDamp = null;
+            foreach (var act in actions.Where(x => x.Type == "SetProperty"))
+            {
+                var prop = act.Var("targetProperty");
+                var f = Json.Obj(prop, "FloatParameter");
+                if (f == null) continue;
+                float v = (float)Json.Num(f, "value");
+                string what = Json.Str(prop, "PropertyName");
+                bool lifted = act.State == "lifted";
+                if (what == "spring.maxLength") { if (lifted) vLiftTravel = v; else vStockTravel = v; }
+                else if (what == "DamperBumpRate") { if (lifted) vLiftDamp = v; else vStockDamp = v; }
+            }
+            float liftTravel = a.ContainsKey("lift_travel") ? Mathf.Max(0.02f, (float)Json.Num(a, "lift_travel"))
+                             : travel + Mathf.Max(0f, (vLiftTravel ?? travel) - (vStockTravel ?? travel));
+            float soft = vStockDamp > 0 && vLiftDamp != null ? vLiftDamp.Value / vStockDamp.Value : 1f;
+            float liftBump = a.ContainsKey("lift_absorption") ? Mathf.Max(0f, (float)Json.Num(a, "lift_absorption")) : bump * soft;
+            float liftRebound = a.ContainsKey("lift_absorption") ? liftBump : rebound * soft;
+            foreach (var act in actions.Where(x => x.Type == "SetProperty"))
+            {
+                var prop = act.Var("targetProperty");
+                var f = Json.Obj(prop, "FloatParameter");
+                if (f == null) continue;
+                bool lifted = act.State == "lifted";
+                switch (Json.Str(prop, "PropertyName"))
+                {
+                    case "spring.maxLength": f["value"] = (double)(lifted ? liftTravel : travel); break;
+                    case "DamperBumpRate": f["value"] = (double)(lifted ? liftBump : bump); break;
+                    case "DamperReboundRate": f["value"] = (double)(lifted ? liftRebound : rebound); break;
+                }
+            }
+            // where the lifted wheel sits: the stock spot moved out (away from the car's middle) and down, if the asset says
+            if (!a.ContainsKey("lift_height") && !a.ContainsKey("lift_wider")) return;   // the skeleton car's, moved with the wheel
+            var stock = actions.FirstOrDefault(x => x.Type == "SetPosition" && x.State == "stock" && x.TargetsOwner());
+            var lift = actions.FirstOrDefault(x => x.Type == "SetPosition" && x.State == "lifted" && x.TargetsOwner());
+            if (stock == null || lift == null) return;
+            float? sx = stock.GetFloat("x"), sy = stock.GetFloat("y"), sz = stock.GetFloat("z");
+            if (sx == null || sy == null || sz == null) return;
+            float wider = (float)Json.Num(a, "lift_wider", 0), height = (float)Json.Num(a, "lift_height", 0);
+            float side = Mathf.Abs(sx.Value) < 0.05f ? 0f : Mathf.Sign(sx.Value);
+            lift.SetFloat("x", sx.Value + side * wider);
+            lift.SetFloat("y", sy.Value - height);
+            lift.SetFloat("z", sz.Value);
+        }
+
+        private static float Damper(Dictionary<string, object> node, string field)
+        {
+            foreach (var c in Json.Arr(node, "components") ?? new List<object>())
+            {
+                if (!(Json.Str(c, "$type") ?? "").StartsWith("NWH.WheelController3D.WheelController")) continue;
+                return (float)Json.Num(Json.Obj(Json.Obj(c, "fields"), "damper"), field, 3000);
+            }
+            return 3000f;
         }
 
         /// The fuel tank's size (litres): the filler's LiquidAmount FSM, filled as much as the skeleton car's is.
@@ -1025,10 +1112,18 @@ namespace Apocars
             SetLocal(hitch, hitchPos);
             SetLocal(hitchRay, hitchPos + (VPos("hitch_raycast") - VPos("hitch")));
 
-            // the lift kit slot between the front wheels
+            // the lift kit slot: where the asset puts it, or between the front wheels
             var frontWheels = attach.Where(a => Json.Str(a, "kind") == "wheel" && hinges.ContainsKey(a)).Select(a => car.InverseTransformPoint(hinges[a].position)).ToList();
             var susp = car.Find("hinge_suspension_parent");
-            if (susp != null && frontWheels.Count > 0)
+            var kitAt = attach.Where(x => Json.Str(x, "kind") == "suspension").Select(x => Point(Json.Str(x, "node"))).FirstOrDefault(x => x != null);
+            var kitSlot = susp != null ? susp.Find("hinge_suspension") : null;
+            if (kitSlot != null && kitSlot.GetComponent<LiftKitRelay>() == null) kitSlot.gameObject.AddComponent<LiftKitRelay>();
+            if (susp != null && kitAt != null)
+            {
+                susp.position = car.TransformPoint(kitAt.Origin);
+                susp.rotation = car.rotation * kitAt.Rot * VRot("hinge_suspension_parent");
+            }
+            else if (susp != null && frontWheels.Count > 0)
             {
                 float maxZ = frontWheels.Max(p => p.z);
                 var fw = frontWheels.Where(p => p.z > maxZ - 0.3f).ToList();

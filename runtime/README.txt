@@ -1,4 +1,4 @@
-Apocars 0.7.5 - a vehicle and car part injector for Apocalypter (BepInEx 5).
+Apocars 0.7.6 - a vehicle and car part injector for Apocalypter (BepInEx 5).
 
 Install: extract the Apocars folder into Apocalypter/BepInEx/plugins (so you have BepInEx/plugins/Apocars/Apocars.dll).
 

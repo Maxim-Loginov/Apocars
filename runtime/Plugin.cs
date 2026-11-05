@@ -23,7 +23,7 @@ namespace Apocars
         /// What Easy Save prefab ids are made from: the same in the lib and every mod built from it, so a car saved with
         /// one loads with the other.
         public const string PrefabSalt = "com.apocalypter.apocars";
-        public const string Version = "0.7.5";
+        public const string Version = "0.7.6";
         private const string ApocasetterGuid = "com.denis.apocalypter.apocasetter";
 
         internal static ManualLogSource Log;
