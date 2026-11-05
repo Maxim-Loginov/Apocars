@@ -22,6 +22,45 @@ namespace Apocars
 
         public static readonly Dictionary<string, GameObject> Templates = new Dictionary<string, GameObject>();
 
+        /// A wheel is drawn as the game's are: by one mesh on the part itself. Fitted, the car's checkWheel FSM puts that
+        /// mesh (and its first material) on the car's wheel hub, which turns and rides the suspension, and CheckTag
+        /// hides the part's own renderer. The model's meshes become that one mesh (a submesh per material); WheelHub
+        /// gives the hub the rest of the materials.
+        private static void WheelLook(GameObject go, GameObject model, Gltf glb, Assembler.Result res)
+        {
+            var parts = new List<CombineInstance>();
+            var mats = new List<Material>();
+            var toPart = go.transform.worldToLocalMatrix;
+            int verts = 0;
+            foreach (var mr in model.GetComponentsInChildren<MeshRenderer>(true))
+            {
+                var mf = mr.GetComponent<MeshFilter>();
+                if (!mr.enabled || mf == null || mf.sharedMesh == null) continue;
+                var m = toPart * mf.transform.localToWorldMatrix;
+                for (int i = 0; i < mf.sharedMesh.subMeshCount; i++)
+                {
+                    parts.Add(new CombineInstance { mesh = mf.sharedMesh, subMeshIndex = i, transform = m });
+                    mats.Add(i < mr.sharedMaterials.Length ? mr.sharedMaterials[i] : mr.sharedMaterial);
+                }
+                verts += mf.sharedMesh.vertexCount;
+            }
+            if (parts.Count == 0) { res.Problems.Add("wheel: no mesh to draw it with"); return; }
+            var mesh = new Mesh { name = go.name + " wheel" };
+            if (verts > 65000) mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
+            mesh.CombineMeshes(parts.ToArray(), false, true);
+            mesh.RecalculateBounds();
+            glb.Own(mesh);
+            foreach (var mr in model.GetComponentsInChildren<MeshRenderer>(true))
+            {
+                var mf = mr.GetComponent<MeshFilter>();
+                Object.DestroyImmediate(mr);
+                if (mf != null) Object.DestroyImmediate(mf);
+            }
+            (go.GetComponent<MeshFilter>() ?? go.AddComponent<MeshFilter>()).sharedMesh = mesh;
+            (go.GetComponent<MeshRenderer>() ?? go.AddComponent<MeshRenderer>()).sharedMaterials = mats.ToArray();
+            if (mats.Count > 1) go.AddComponent<WheelHub>();
+        }
+
         /// Its weight (spec mass, kg): the template's body, and the body the game gives it again each time it comes off a
         /// car (CheckTag: AddComponent Rigidbody, SetProperty mass). A wheel's mass on the car is scaled along with it.
         private static void SetMass(Dictionary<string, object> root, Dictionary<string, object> spec, string type)
@@ -280,6 +319,7 @@ namespace Apocars
 
             float mass = (float)Json.Num(spec, "mass", 0);
             if (mass > 0 && go.GetComponent<Rigidbody>() is Rigidbody body) body.mass = mass;
+            if (type == "wheel") WheelLook(go, model, glb, res);
             res.Root = go;
             return res;
         }
@@ -340,6 +380,29 @@ namespace Apocars
             _fitted = fitted;
             var col = transform.Find("colliders");
             if (col != null) foreach (var c in col.GetComponentsInChildren<Collider>(true)) c.enabled = fitted == 0;
+        }
+    }
+
+    /// On a wheel with more than one material: fitted, the car's hub (which the game gives the wheel's mesh and first
+    /// material) gets all of them.
+    public class WheelHub : MonoBehaviour
+    {
+        private Transform _on;
+        private float _next;
+
+        private void Update()
+        {
+            if (Time.time < _next) return;
+            _next = Time.time + 0.25f;
+            var hinge = CompareTag("vehPart") ? transform.parent : null;
+            if (hinge == _on) return;
+            var hub = hinge != null ? hinge.Find("wheel_hub") : null;
+            var hubR = hub != null ? hub.GetComponent<MeshRenderer>() : null;
+            var mine = GetComponent<MeshRenderer>();
+            var mf = GetComponent<MeshFilter>();
+            if (hinge != null && (hubR == null || hub.GetComponent<MeshFilter>()?.sharedMesh != mf?.sharedMesh)) return;   // not given the mesh yet
+            if (hubR != null && mine != null) hubR.sharedMaterials = mine.sharedMaterials;
+            _on = hinge;
         }
     }
 

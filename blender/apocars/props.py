@@ -181,9 +181,10 @@ class ApocarsSlot(bpy.types.PropertyGroup):
                     "works like (doors, seats, wheels: 50; radiators: 20; steering wheels, headlights: 10). "
                     "A wheel's weight is also the wheel's own mass on the car once fitted (the game's wheels: 20-45)")
     part_grip: FloatProperty(
-        name="Grip", default=0.9, min=0.05, max=3.0, step=5, precision=2,
+        name="Grip", default=0.9, min=0.05, max=1.5, step=5, precision=2,
         description="How well the tyre holds the road, as the game's wheels have it: rubbish 0.7, street 0.9, "
-                    "all-terrain 1.0, off-road 1.1, big off-road 1.2. A worn-out tyre drops to 0.2 like the game's")
+                    "all-terrain 1.0, off-road 1.1, big off-road 1.2. Much more than the game's makes its engines bog "
+                    "down and stall pulling away. A worn-out tyre drops to 0.2 like the game's")
     part_spawn_vanilla: BoolProperty(
         name="Like the game's part", default=True,
         description="Spawn wherever the game's part it works like spawns (in every spawn list that has it, as often as "
@@ -267,9 +268,10 @@ class ApocarsSettings(bpy.types.PropertyGroup):
                     "works like (doors, seats, wheels: 50; radiators: 20; steering wheels, headlights: 10). "
                     "A wheel's weight is also the wheel's own mass on the car once fitted (the game's wheels: 20-45)")
     part_grip: FloatProperty(
-        name="Grip", default=0.9, min=0.05, max=3.0, step=5, precision=2,
+        name="Grip", default=0.9, min=0.05, max=1.5, step=5, precision=2,
         description="How well the tyre holds the road, as the game's wheels have it: rubbish 0.7, street 0.9, "
-                    "all-terrain 1.0, off-road 1.1, big off-road 1.2. A worn-out tyre drops to 0.2 like the game's")
+                    "all-terrain 1.0, off-road 1.1, big off-road 1.2. Much more than the game's makes its engines bog "
+                    "down and stall pulling away. A worn-out tyre drops to 0.2 like the game's")
     part_template: StringProperty(name="Made like", description="The vanilla part it works like (its FSMs, sounds, opening)", search=_templates,
                                   update=_part_vanilla)
     slots: CollectionProperty(type=ApocarsSlot)

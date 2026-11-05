@@ -197,6 +197,7 @@ namespace Apocars
             Solids(car, boxes, markers, res);
             PlaceSkeleton(car, vanillaRoot, attach, boxes, markers, hingeOf, bounds, res);
             FitCustomPanel(car, panelParts, glb, markers, boxes, res);
+            WheelPaths(car, res);
 
             float mass = (float)Json.Num(spec, "mass", 0);
             float vanillaMass = car.GetComponent<Rigidbody>() is Rigidbody rb0 ? rb0.mass : 600f;   // the skeleton car's, its inertia is for
@@ -206,6 +207,50 @@ namespace Apocars
             Object.Destroy(model);
             res.Root = rootGo;
             return res;
+        }
+
+        /// What a wheel would stand on: a wheel finds the ground by a sphere cast through its hinge, down (its radius
+        /// wide, from 1.1 radii above the hinge to the travel and 1.1 radii below it) against the layers of its layerMask (the game's: Default and 14), triggers too.
+        /// The car's own colliders on those layers (the ignition box, the handbrake, the fuel cap's syphon sphere, the
+        /// toolsets, the interior light: all Default) in that path would hold the wheel up: reported, to be moved.
+        /// The body's solids are on 8 (16 see-through), which no wheel looks at, and colliders of one car never collide.
+        private static void WheelPaths(Transform car, Result res)
+        {
+            var colliders = car.GetComponentsInChildren<Collider>(true);
+            foreach (var wc in car.GetComponentsInChildren<NWH.WheelController3D.WheelController>(true))
+            {
+                var t = wc.transform;
+                int mask = wc.layerMask.value;
+                float r = Mathf.Max(wc.Radius, 0.3f);   // the largest of the game's usual wheels, whatever is fitted now
+                // as NWH casts it (FindTheHitPoint): from 1.1 radii above the hinge, 2.2 radii and the travel down
+                Vector3 a = t.position + t.up * (r * 1.1f), b = a - t.up * (r * 2.2f + wc.spring.maxLength);
+                foreach (var c in colliders)
+                {
+                    if (c.transform.IsChildOf(t) || ((1 << c.gameObject.layer) & mask) == 0) continue;
+                    // the collider as a sphere around it (world): close enough to the wheel's path is in it
+                    Vector3 centre; float size;
+                    var sc = c.transform.lossyScale;
+                    float scale = Mathf.Max(Mathf.Abs(sc.x), Mathf.Max(Mathf.Abs(sc.y), Mathf.Abs(sc.z)));
+                    switch (c)
+                    {
+                        case BoxCollider bc: centre = c.transform.TransformPoint(bc.center); size = Vector3.Scale(bc.size, sc).magnitude / 2f; break;
+                        case SphereCollider sp: centre = c.transform.TransformPoint(sp.center); size = sp.radius * scale; break;
+                        case CapsuleCollider cp: centre = c.transform.TransformPoint(cp.center); size = Mathf.Max(cp.radius, cp.height / 2f) * scale; break;
+                        default: continue;
+                    }
+                    var ab = b - a;
+                    float k = Mathf.Clamp01(Vector3.Dot(centre - a, ab) / Mathf.Max(ab.sqrMagnitude, 1e-6f));
+                    if (Vector3.Distance(centre, a + ab * k) < r + size)
+                        res.Problems.Add($"wheel {t.name}: '{PathIn(car, c.transform)}' is where the wheel moves (the wheel would stand on it): move it away from the wheel");
+                }
+            }
+        }
+
+        private static string PathIn(Transform root, Transform t)
+        {
+            var names = new List<string>();
+            for (var x = t; x != null && x != root; x = x.parent) names.Insert(0, x.name);
+            return string.Join("/", names);
         }
 
         /// The asset's stock and lifted suspension meshes into the car's suspension_model (its first child is the stock
