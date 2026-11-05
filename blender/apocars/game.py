@@ -226,6 +226,12 @@ def forget():
     _index = _materials = _mounts = _decor = None
 
 
+def vanilla_part_values(template):
+    """A game part's own weight off the car (kg) and, for a wheel, its grip: (mass or None, grip or None)."""
+    d = data()
+    return d.get("part_mass", {}).get(template), d.get("wheels", {}).get(template, {}).get("grip")
+
+
 def part_id(kind):
     return data()["kinds"].get(kind, {}).get("part_id", kind)
 

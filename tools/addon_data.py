@@ -197,6 +197,24 @@ def main():
         if pid:
             parts.setdefault(pid, []).append(d["name"])
     vehicles = sorted(f[:-5] for f in os.listdir(os.path.join(dump, "vehicles")) if f.endswith(".json"))
+    # every part's weight off the car, kg: what CheckTag gives it each time it comes off, else its body's
+    part_mass = {}
+    for f in sorted(os.listdir(os.path.join(dump, "parts"))):
+        if not f.endswith(".json"):
+            continue
+        d = json.load(open(os.path.join(dump, "parts", f), encoding="utf-8"))
+        m = next((c["props"].get("mass") for c in d["root"]["components"] if c["$type"].startswith("UnityEngine.Rigidbody")), None)
+        for c in d["root"]["components"]:
+            fsm = (c.get("fields") or {}).get("fsm") or {}
+            if fsm.get("name") != "CheckTag":
+                continue
+            for st in fsm.get("states") or []:
+                for prop in (st.get("actionData") or {}).get("fsmPropertyParams") or []:
+                    fp = prop.get("FloatParameter") or {}
+                    if prop.get("PropertyName") == "mass" and not fp.get("useVariable"):
+                        m = fp.get("value", m)
+        if m:
+            part_mass[d["name"]] = round(m, 2)
     # the game's wheels: what their Condition FSM gives the car's wheel when fitted (grip, radius, width)
     wheels = {}
     for f in sorted(os.listdir(os.path.join(dump, "parts"))):
@@ -227,7 +245,7 @@ def main():
                             if "/ Grip" in v and not sp.get("useVariable"):
                                 vals["title"] = v.split("/ Grip")[0].strip()
                 wheels[d["name"]] = vals
-    json.dump({"vehicles": vehicles, "kinds": kinds, "defaults": defaults, "controls": controls, "poloska_box": POLOSKA_BOX, "parts_by_id": parts, "wheels": wheels}, open(out, "w"), indent=1)
+    json.dump({"vehicles": vehicles, "kinds": kinds, "defaults": defaults, "controls": controls, "poloska_box": POLOSKA_BOX, "parts_by_id": parts, "wheels": wheels, "part_mass": part_mass}, open(out, "w"), indent=1)
     print(f"{len(kinds)} kinds, {sum(len(v) for v in parts.values())} parts in {len(parts)} IDs -> {out}")
 
 

@@ -119,7 +119,7 @@ def spec(context, model):
     lines.append(f"  id = {lua_value(s.asset_id)},")
     lines.append(f"  name = {lua_value(s.display_name)},")
     lines.append(f"  model = {lua_value(model)},")
-    lines.append(f"  mass = {lua_value(s.mass)},")
+    lines.append(f"  mass = {lua_value(s.mass if s.mode == 'VEHICLE' else s.part_mass)},")
     if s.mode == "VEHICLE":
         lines.append(f"  fuel = {lua_value(s.fuel_capacity)},")
         types = {"OPEN": 0, "LOCKED": 1, "LSD": 2}

@@ -97,6 +97,11 @@ class APOCARS_OT_mesh_to_part(bpy.types.Operator):
         slot.obj, slot.owned = marker, True
         slot.part_mesh = mesh
         slot.part_template = template_for(kind, conv.unity_pos(centre)[0])
+        # its weight and grip start as the game part's it works like
+        mass, grip = game.vanilla_part_values(template_of(slot))
+        slot.part_mass = mass or 50.0
+        if grip is not None:
+            slot.part_grip = grip
         mesh[ROLE] = "partmesh"
         self.report({"INFO"}, f"{mesh.name} is a {dict(game.KINDS)[kind].lower()} attachment on {marker.name}")
         return {"FINISHED"}
@@ -255,6 +260,7 @@ def write_parts(context, folder):
                  f"  name = {lua_value(s.display_name + ' ' + title.rstrip('s').lower())},",
                  f"  model = {lua_value(os.path.basename(glb))},",
                  f"  type = {lua_value(game.part_id(slot.kind))},",
+                 f"  mass = {lua_value(round(slot.part_mass, 3))},",
                  f"  template = {lua_value(template_of(slot))},",
                  f"  for_car = {lua_value(s.asset_id)},",
                  f"  slot = {lua_value(slot.obj.name)},",
@@ -293,6 +299,7 @@ def release(slot):
     slot.part_mesh = None
     slot.part_template = ""
     slot.part_spawns.clear()
+    slot.part_mass = 50.0
     slot.part_spawn_vanilla = True
     slot.part_spawn_like = ""
 

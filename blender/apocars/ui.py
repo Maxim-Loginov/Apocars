@@ -92,7 +92,7 @@ class APOCARS_PT_body(Step):
             b.operator("apocars.setup", icon="ADD")
         else:
             b.label(text=f"Root: {s.root.name}", icon="EMPTY_AXIS")
-        b.prop(s, "mass")
+        b.prop(s, "mass" if s.mode == "VEHICLE" else "part_mass")
         if s.mode == "PART":
             b.prop(s, "part_type")
             b.prop(s, "part_template", text="Made like")
@@ -177,6 +177,7 @@ def draw_mesh_part(col, context, i, x):
     r.operator("apocars.select", text="", icon="RESTRICT_SELECT_OFF").name = x.part_mesh.name
     if x.obj is not None:
         r.operator("apocars.select", text="", icon="EMPTY_ARROWS").name = x.obj.name
+    col.prop(x, "part_mass")
     # collision
     sub = col.box().column(align=True)
     r = sub.row(align=True)

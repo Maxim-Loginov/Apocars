@@ -22,6 +22,35 @@ namespace Apocars
 
         public static readonly Dictionary<string, GameObject> Templates = new Dictionary<string, GameObject>();
 
+        /// Its weight (spec mass, kg): the template's body, and the body the game gives it again each time it comes off a
+        /// car (CheckTag: AddComponent Rigidbody, SetProperty mass). A wheel's mass on the car is scaled along with it.
+        private static void SetMass(Dictionary<string, object> root, Dictionary<string, object> spec, string type)
+        {
+            float mass = (float)Json.Num(spec, "mass", 0);
+            if (mass <= 0) return;
+            mass = Mathf.Clamp(mass, 0.1f, 100000f);
+            float was = 0f;   // the game part's own weight off the car: CheckTag's, else its body's
+            foreach (var c in Json.Arr(root, "components") ?? new List<object>())
+                if ((Json.Str(c, "$type") ?? "").StartsWith("UnityEngine.Rigidbody,") && Json.Obj(c, "props") is Dictionary<string, object> props)
+                {
+                    was = (float)Json.Num(props, "mass", 0);
+                    props["mass"] = (double)mass;
+                }
+            var sets = new[] { "CheckTag", "Condition" }.SelectMany(n => FsmEdit.Actions(root, n)).Where(a => a.Type == "SetProperty")
+                .Select(a => (a, prop: a.Var("targetProperty"))).Select(x => (x.a, x.prop, f: Json.Obj(x.prop, "FloatParameter")))
+                .Where(x => x.f != null && !Json.Bool(x.f, "useVariable")).ToList();
+            foreach (var x in sets.Where(x => x.a.FsmName == "CheckTag" && Json.Str(x.prop, "PropertyName") == "mass"))
+            {
+                was = (float)Json.Num(x.f, "value", was);
+                x.f["value"] = (double)mass;
+            }
+            // a wheel: its mass on the car (the WheelController's, lighter than the part: 33 kg for a 50 kg street
+            // wheel) grows and shrinks with its weight, so a wheel at the game's weight drives as the game's does
+            if (type == "wheel" && was > 0)
+                foreach (var x in sets.Where(x => x.a.FsmName == "Condition" && Json.Str(x.prop, "PropertyName") == "Mass"))
+                    x.f["value"] = Json.Num(x.f, "value", 0) * mass / was;
+        }
+
         /// A wheel as the game's wheels are: fitted, its Condition FSM gives the car's wheel its radius, width, mass and
         /// grip (worn out, below 1% condition: a flat, 0.6 of the radius and grip 0.2), and its name shows its grip
         /// ("Street Wheel / Grip: 0.9"). Radius and width are measured from the model (the game's: 96% of half the tyre's
@@ -119,6 +148,7 @@ namespace Apocars
             // the model, under "model" as the game's parts have it (built first: a wheel is measured for its FSMs)
             var model = glb.Build(holder, "model");
             if (type == "wheel") SetWheel(root, spec, model, Json.Str(spec, "name", id), res);
+            SetMass(root, spec, type);
 
             var rb = new Rebuild();
             var src = rb.Load(tplName, copy);

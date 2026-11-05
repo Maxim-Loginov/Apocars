@@ -120,6 +120,16 @@ def _part_spawn_like_search(self, context, edit_text):
     return [n for n in game.spawn_like("PART") if t in n.lower()][:300]
 
 
+def _part_vanilla(self, context):
+    """A part's weight (and a wheel's grip) set to the game part's it's made like, when that changes."""
+    tpl = self.part_template or game.DEFAULT_TEMPLATE.get(self.part_type, "")
+    mass, grip = game.vanilla_part_values(tpl)
+    if mass:
+        self.part_mass = mass
+    if grip is not None:
+        self.part_grip = grip
+
+
 def lift_props(prefix, many):
     """The lifted suspension's settings (used once the game's lift kit is fitted): on a wheel, or for all of them."""
     w = "wheels" if many else "wheel"
@@ -165,6 +175,11 @@ class ApocarsSlot(bpy.types.PropertyGroup):
     absorption: FloatProperty(name="Absorption", default=3000.0, min=0.0, max=100000.0, step=1000,
                               description="The damper's rate (bump and rebound): higher settles bounces sooner, "
                                           "lower lets the car float (the game's cars: 3000)")
+    part_mass: FloatProperty(
+        name="Weight", default=50.0, min=0.1, max=5000.0, unit="MASS",
+        description="How heavy it is when it's off the car, in kg: carried, dropped, thrown. Starts as the game part's it "
+                    "works like (doors, seats, wheels: 50; radiators: 20; steering wheels, headlights: 10). "
+                    "A wheel's weight is also the wheel's own mass on the car once fitted (the game's wheels: 20-45)")
     part_grip: FloatProperty(
         name="Grip", default=0.9, min=0.05, max=3.0, step=5, precision=2,
         description="How well the tyre holds the road, as the game's wheels have it: rubbish 0.7, street 0.9, "
@@ -244,12 +259,19 @@ class ApocarsSettings(bpy.types.PropertyGroup):
     body: PointerProperty(type=bpy.types.Object, name="Body", description="The mesh that is the body", poll=lambda self, o: o.type == "MESH")
     mass: FloatProperty(name="Mass", default=900.0, min=1.0, unit="MASS",
                         description="Its weight in kg (the Poloska: 600). With the centre of mass and suspension, it decides how it drives")
-    part_type: EnumProperty(name="Part type", items=_part_types, description="What the part is: decides which hinges it fits")
+    part_type: EnumProperty(name="Part type", items=_part_types, update=_part_vanilla,
+                            description="What the part is: decides which hinges it fits")
+    part_mass: FloatProperty(
+        name="Weight", default=50.0, min=0.1, max=5000.0, unit="MASS",
+        description="How heavy it is when it's off the car, in kg: carried, dropped, thrown. Starts as the game part's it "
+                    "works like (doors, seats, wheels: 50; radiators: 20; steering wheels, headlights: 10). "
+                    "A wheel's weight is also the wheel's own mass on the car once fitted (the game's wheels: 20-45)")
     part_grip: FloatProperty(
         name="Grip", default=0.9, min=0.05, max=3.0, step=5, precision=2,
         description="How well the tyre holds the road, as the game's wheels have it: rubbish 0.7, street 0.9, "
                     "all-terrain 1.0, off-road 1.1, big off-road 1.2. A worn-out tyre drops to 0.2 like the game's")
-    part_template: StringProperty(name="Made like", description="The vanilla part it works like (its FSMs, sounds, opening)", search=_templates)
+    part_template: StringProperty(name="Made like", description="The vanilla part it works like (its FSMs, sounds, opening)", search=_templates,
+                                  update=_part_vanilla)
     slots: CollectionProperty(type=ApocarsSlot)
     boxes: CollectionProperty(type=ApocarsBox)
     solids: CollectionProperty(type=ApocarsSolid)
