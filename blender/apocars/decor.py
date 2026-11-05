@@ -130,7 +130,8 @@ def _decor_enum(self, context):
     g = game_dir(context)
     pieces = game.decor(g)
     if _decor_items["key"] != (g, len(pieces)):
-        items = [(p["id"], f"{p['category']}: {p['car']} {p['name']}", f"From the {p['car']}") for p in pieces]
+        items = [(p["id"], p.get("label") or f"{p['category']}: {p['car']} {p['name']}", p.get("note") or f"From the {p['car']}")
+                 for p in pieces]
         _decor_items["key"], _decor_items["items"] = (g, len(pieces)), items or [("", "(build the vanilla library first)", "")]
     return _decor_items["items"]
 
@@ -139,7 +140,7 @@ class APOCARS_OT_decor_add(bpy.types.Operator):
     bl_idname = "apocars.decor_add"
     bl_label = "Add new"
     bl_description = ("Import a piece of one of the game's cars (a suspension, drivetrain or engine bay part) where that "
-                      "car has it: move it into place. It's part of the body: exported and drawn in game, with the "
+                      "car has it, or one of the game's wheels (where a front left wheel is): move it into place. It's part of the body: exported and drawn in game, with the "
                       "game's own materials")
     bl_options = {"REGISTER", "UNDO"}
     bl_property = "piece"
@@ -158,7 +159,7 @@ class APOCARS_OT_decor_add(bpy.types.Operator):
             return {"CANCELLED"}
         s = S(context)
         root = ensure_root(context)
-        holder = bpy.data.objects.new(unique(f"D_{p['car']}_{p['name']}".replace(" ", "_")), None)
+        holder = bpy.data.objects.new(unique(f"D_{p['car'] or p['category']}_{p['name']}".replace(" ", "_")), None)
         holder.empty_display_type = "PLAIN_AXES"
         holder.empty_display_size = 0.1
         context.scene.collection.objects.link(holder)

@@ -171,6 +171,8 @@ def spec(context, model):
             boxes.append(e)
     else:
         lines.append(f"  type = {lua_value(s.part_type)},")
+        if s.part_type == "wheel":
+            lines.append(f"  grip = {lua_value(round(s.part_grip, 3))},")
         lines.append(f"  template = {lua_value(s.part_template or game.DEFAULT_TEMPLATE.get(s.part_type, ''))},")
     for sol in s.solids:
         if sol.obj is None:

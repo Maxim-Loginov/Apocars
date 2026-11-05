@@ -22,6 +22,66 @@ namespace Apocars
 
         public static readonly Dictionary<string, GameObject> Templates = new Dictionary<string, GameObject>();
 
+        /// A wheel as the game's wheels are: fitted, its Condition FSM gives the car's wheel its radius, width, mass and
+        /// grip (worn out, below 1% condition: a flat, 0.6 of the radius and grip 0.2), and its name shows its grip
+        /// ("Street Wheel / Grip: 0.9"). Radius and width are measured from the model (the game's: 96% of half the tyre's
+        /// height, a little squashed, and 95% of its width); grip is the asset's (spec grip), or the game wheel's.
+        private static void SetWheel(Dictionary<string, object> root, Dictionary<string, object> spec, GameObject model, string name, Assembler.Result res)
+        {
+            var hidden = new HashSet<string>(Spec.Entries(spec, "boxes")
+                .Where(b => Json.Str(b, "kind") == "solid" && Json.Bool(b, "hidden", true)).Select(b => Json.Str(b, "node") ?? ""));
+            var min = Vector3.positiveInfinity;
+            var max = Vector3.negativeInfinity;
+            var toModel = model.transform.worldToLocalMatrix;
+            foreach (var mf in model.GetComponentsInChildren<MeshFilter>(true))
+            {
+                if (mf.sharedMesh == null || hidden.Contains(mf.name)) continue;
+                var m = toModel * mf.transform.localToWorldMatrix;
+                var b = mf.sharedMesh.bounds;
+                for (int i = 0; i < 8; i++)
+                {
+                    var p = m.MultiplyPoint3x4(b.center + Vector3.Scale(b.extents, new Vector3((i & 1) == 0 ? -1 : 1, (i & 2) == 0 ? -1 : 1, (i & 4) == 0 ? -1 : 1)));
+                    min = Vector3.Min(min, p);
+                    max = Vector3.Max(max, p);
+                }
+            }
+            float? radius = null, width = null;
+            if (!float.IsInfinity(min.x))
+            {
+                // the axle is along its thinnest side; the tyre's height is the larger of the other two
+                var size = max - min;
+                var sides = new[] { size.x, size.y, size.z }.OrderBy(v => v).ToArray();
+                width = 0.95f * sides[0];
+                radius = 0.96f * sides[2] / 2f;
+            }
+            else res.Problems.Add("wheel: no mesh to measure (the game wheel's radius is used)");
+            float? grip = spec.ContainsKey("grip") ? Mathf.Clamp((float)Json.Num(spec, "grip", 0.9), 0.05f, 5f) : (float?)null;
+            float shownGrip = grip ?? 0.9f;
+            foreach (var act in FsmEdit.Actions(root, "Condition").Where(a => a.Type == "SetProperty"))
+            {
+                var prop = act.Var("targetProperty");
+                var f = Json.Obj(prop, "FloatParameter");
+                if (f == null || Json.Bool(f, "useVariable")) continue;
+                bool flat = act.State == "broken";
+                switch (Json.Str(prop, "PropertyName"))
+                {
+                    case "Radius": if (radius != null) f["value"] = (double)(flat ? radius.Value * 0.6f : radius.Value); break;
+                    case "Width": if (width != null && !flat) f["value"] = (double)width.Value; break;
+                    case "forwardFriction.grip":
+                        if (flat) break;
+                        if (grip != null) f["value"] = (double)grip.Value; else shownGrip = (float)Json.Num(f, "value", 0.9);
+                        break;
+                }
+            }
+            foreach (var act in FsmEdit.Actions(root, "ItemName").Where(a => a.Type == "UiTextSetText"))
+            {
+                var text = act.Var("text");
+                if (text != null && (Json.Str(text, "value") ?? "").Contains("Grip:"))
+                    text["value"] = $"{name} / Grip: {Math.Round(shownGrip, 2)}";
+            }
+            if (Plugin.VerboseLog.Value) Plugin.Log.LogInfo($"Wheel {name}: radius {radius}, width {width}, grip {shownGrip}");
+        }
+
         public static Assembler.Result Build(string id, Dictionary<string, object> spec, Gltf glb, Transform holder)
         {
             var res = new Assembler.Result();
@@ -56,15 +116,17 @@ namespace Apocars
             // fitted. A part made like a game part without that FSM (bumpers, wheels) gets the doors' one
             EnsureCollidersFsm(root, res);
 
+            // the model, under "model" as the game's parts have it (built first: a wheel is measured for its FSMs)
+            var model = glb.Build(holder, "model");
+            if (type == "wheel") SetWheel(root, spec, model, Json.Str(spec, "name", id), res);
+
             var rb = new Rebuild();
             var src = rb.Load(tplName, copy);
             var go = rb.Create(src, root, holder);
             rb.Apply();
             res.Problems.AddRange(rb.Problems);
             go.name = id;
-
-            // the model, under "model" as the game's parts have it
-            var model = glb.Build(go.transform, "model");
+            model.transform.SetParent(go.transform, false);
             foreach (var t in model.GetComponentsInChildren<Transform>(true)) t.gameObject.layer = 0;
             var solids = Spec.Entries(spec, "boxes").Where(b => Json.Str(b, "kind") == "solid").ToList();
             var colT = go.transform.Find("colliders");

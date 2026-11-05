@@ -44,7 +44,7 @@ The mod itself is needed for hot reload and extracting game files for you to use
 
 1. Install [BepInEx 5](https://github.com/BepInEx/BepInEx/releases) (x64) into the Apocalypter folder and start the game once.
 2. **Mod:** from the [Releases](../../releases), extract `Apocars-<version>.zip` into `Apocalypter/BepInEx/plugins`. You should end up with `BepInEx/plugins/Apocars/Apocars.dll`.
-3. **Add-on:** in Blender 4.2 or newer, go to **Edit → Preferences → Add-ons → Install from Disk** and pick `Apocars-Blender-addon-<version>.zip`. The panel is in the 3D View sidebar: press **N**, then open the **Apocars** tab.
+3. **Add-on:** in Blender 4.2 or newer, go to **Edit → Preferences → Add-ons → Install from Disk** and pick `Blender-addon-Apocars-<version>.zip`. The panel is in the 3D View sidebar: press **N**, then open the **Apocars** tab.
 
 ### 2. Get the game's parts into Blender (once)
 

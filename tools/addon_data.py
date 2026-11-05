@@ -197,7 +197,37 @@ def main():
         if pid:
             parts.setdefault(pid, []).append(d["name"])
     vehicles = sorted(f[:-5] for f in os.listdir(os.path.join(dump, "vehicles")) if f.endswith(".json"))
-    json.dump({"vehicles": vehicles, "kinds": kinds, "defaults": defaults, "controls": controls, "poloska_box": POLOSKA_BOX, "parts_by_id": parts}, open(out, "w"), indent=1)
+    # the game's wheels: what their Condition FSM gives the car's wheel when fitted (grip, radius, width)
+    wheels = {}
+    for f in sorted(os.listdir(os.path.join(dump, "parts"))):
+        if not f.endswith(".json"):
+            continue
+        d = json.load(open(os.path.join(dump, "parts", f), encoding="utf-8"))
+        for c in d["root"]["components"]:
+            fsm = (c.get("fields") or {}).get("fsm") or {}
+            if fsm.get("name") != "Condition":
+                continue
+            vals = {}
+            for st in fsm.get("states") or []:
+                if st.get("name") == "broken":
+                    continue
+                for prop in (st.get("actionData") or {}).get("fsmPropertyParams") or []:
+                    fp = prop.get("FloatParameter") or {}
+                    if prop.get("PropertyName") in ("forwardFriction.grip", "Radius", "Width") and not fp.get("useVariable"):
+                        vals[{"forwardFriction.grip": "grip", "Radius": "radius", "Width": "width"}[prop["PropertyName"]]] = round(fp.get("value", 0), 3)
+            if "grip" in vals:
+                # its name as the game shows it ("Big Off-Road Wheel / Grip: 1.2" -> "Big Off-Road Wheel")
+                for c2 in d["root"]["components"]:
+                    f2 = (c2.get("fields") or {}).get("fsm") or {}
+                    if f2.get("name") != "ItemName":
+                        continue
+                    for st in f2.get("states") or []:
+                        for sp in (st.get("actionData") or {}).get("fsmStringParams") or []:
+                            v = sp.get("value") or ""
+                            if "/ Grip" in v and not sp.get("useVariable"):
+                                vals["title"] = v.split("/ Grip")[0].strip()
+                wheels[d["name"]] = vals
+    json.dump({"vehicles": vehicles, "kinds": kinds, "defaults": defaults, "controls": controls, "poloska_box": POLOSKA_BOX, "parts_by_id": parts, "wheels": wheels}, open(out, "w"), indent=1)
     print(f"{len(kinds)} kinds, {sum(len(v) for v in parts.values())} parts in {len(parts)} IDs -> {out}")
 
 

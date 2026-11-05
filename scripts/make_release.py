@@ -4,7 +4,7 @@
     python3 scripts/make_release.py <Apocalypter folder with BepInEx installed>
 
   dist/Apocars-<version>.zip                 the mod (extract into BepInEx/plugins)
-  dist/Apocars-Blender-addon-<version>.zip   the Blender add-on (Install from Disk)
+  dist/Blender-addon-Apocars-<version>.zip   the Blender add-on (Install from Disk)
 
 Needs the .NET SDK. The add-on carries a standalone build of the runtime (the one its Build mod button turns into a
 mod of its own), so the runtime is built twice: as Apocars and as the standalone."""
@@ -62,7 +62,8 @@ def main():
     zip_dir(stage, mod_zip, "Apocars")
     shutil.rmtree(stage)
     # the add-on
-    addon_zip = os.path.join(DIST, f"Apocars-Blender-addon-{addon_version}.zip")
+    # not starting with the repository's name: Apocasetter's index takes the first zip that does as the mod
+    addon_zip = os.path.join(DIST, f"Blender-addon-Apocars-{addon_version}.zip")
     zip_dir(ADDON, addon_zip, "apocars")
     print(mod_zip)
     print(addon_zip)

@@ -1059,6 +1059,18 @@ namespace Apocars
             {
                 fuel.position = car.TransformPoint(capAt.Origin);
                 fuel.rotation = car.rotation * capAt.Rot * VRot("Fuel");
+                // its size: the point's scale on the cap (and the spheres you look at to use it, so it's as easy to
+                // hit); the fill trigger and the hose stay as the game has them
+                var size = Abs(capAt.Scale);
+                if ((size - Vector3.one).sqrMagnitude > 1e-4f && size.x > 1e-3f && size.y > 1e-3f && size.z > 1e-3f)
+                {
+                    var cap = fuel.Find("mesh");
+                    if (cap != null) cap.localScale = Vector3.Scale(cap.localScale, size);
+                    float grow = Mathf.Max(size.x, Mathf.Max(size.y, size.z));
+                    foreach (var sc in fuel.GetComponents<SphereCollider>()) sc.radius *= grow;
+                    var syphon = fuel.Find("Syphon");
+                    if (syphon != null) foreach (var sc in syphon.GetComponents<SphereCollider>()) sc.radius *= grow;
+                }
             }
             else if (fuel != null)
                 fuel.position = car.TransformPoint(fuelBox != null ? fuelBox.Pos : new Vector3(bounds.min.x + 0.05f, bounds.center.y, bounds.min.z + bounds.size.z * 0.3f));

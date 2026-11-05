@@ -165,6 +165,10 @@ class ApocarsSlot(bpy.types.PropertyGroup):
     absorption: FloatProperty(name="Absorption", default=3000.0, min=0.0, max=100000.0, step=1000,
                               description="The damper's rate (bump and rebound): higher settles bounces sooner, "
                                           "lower lets the car float (the game's cars: 3000)")
+    part_grip: FloatProperty(
+        name="Grip", default=0.9, min=0.05, max=3.0, step=5, precision=2,
+        description="How well the tyre holds the road, as the game's wheels have it: rubbish 0.7, street 0.9, "
+                    "all-terrain 1.0, off-road 1.1, big off-road 1.2. A worn-out tyre drops to 0.2 like the game's")
     part_spawn_vanilla: BoolProperty(
         name="Like the game's part", default=True,
         description="Spawn wherever the game's part it works like spawns (in every spawn list that has it, as often as "
@@ -241,6 +245,10 @@ class ApocarsSettings(bpy.types.PropertyGroup):
     mass: FloatProperty(name="Mass", default=900.0, min=1.0, unit="MASS",
                         description="Its weight in kg (the Poloska: 600). With the centre of mass and suspension, it decides how it drives")
     part_type: EnumProperty(name="Part type", items=_part_types, description="What the part is: decides which hinges it fits")
+    part_grip: FloatProperty(
+        name="Grip", default=0.9, min=0.05, max=3.0, step=5, precision=2,
+        description="How well the tyre holds the road, as the game's wheels have it: rubbish 0.7, street 0.9, "
+                    "all-terrain 1.0, off-road 1.1, big off-road 1.2. A worn-out tyre drops to 0.2 like the game's")
     part_template: StringProperty(name="Made like", description="The vanilla part it works like (its FSMs, sounds, opening)", search=_templates)
     slots: CollectionProperty(type=ApocarsSlot)
     boxes: CollectionProperty(type=ApocarsBox)

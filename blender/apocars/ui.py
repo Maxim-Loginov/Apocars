@@ -131,7 +131,7 @@ class APOCARS_PT_decor(Step):
                 r.label(text="(deleted)")
             r.operator("apocars.decor_delete", text="", icon="TRASH").index = i
         if not s.decor:
-            col.label(text="Suspensions, drivetrains, engine bays of the game's cars")
+            col.label(text="Suspensions, drivetrains, engine bays, wheels of the game's cars")
         if not game.decor(g):
             b.label(text="Needs the vanilla library (Export step)", icon="INFO")
 
@@ -212,6 +212,13 @@ def draw_mesh_part(col, context, i, x):
         r.prop(b, "show", text="", icon="HIDE_OFF" if b.show else "HIDE_ON")
         op = r.operator("apocars.part_box_delete", text="", icon="TRASH")
         op.index, op.which, op.sub = i, "lock", j
+    if x.kind == "wheel":
+        sub = col.box().column(align=True)
+        sub.label(text="Wheel", icon="MESH_CYLINDER")
+        sub.prop(x, "part_grip")
+        hint = sub.row()
+        hint.enabled = False
+        hint.label(text="Radius and width: measured from the mesh", icon="INFO")
     # where it spawns
     sub = col.box().column(align=True)
     sub.label(text="Spawn", icon="WORLD")
@@ -424,6 +431,13 @@ class APOCARS_PT_props(Step):
             r = col.row()
             r.enabled = False
             r.label(text="World loot: always (the game's item list)", icon="INFO")
+            if s.part_type == "wheel":
+                col = self.layout.box().column(align=True)
+                col.label(text="Wheel", icon="MESH_CYLINDER")
+                col.prop(s, "part_grip")
+                hint = col.row()
+                hint.enabled = False
+                hint.label(text="Radius and width: measured from the mesh", icon="INFO")
             return
         if not on:
             col.label(text="Spawns nowhere: only by hand (Apocars' Tools > Spawn)", icon="INFO")

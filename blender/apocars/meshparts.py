@@ -260,6 +260,8 @@ def write_parts(context, folder):
                  f"  slot = {lua_value(slot.obj.name)},",
                  "  boxes = {"] + ["    " + entry(e) + "," for e in entries] + [
                  "  },"]
+        if slot.kind == "wheel":
+            lines.append(f"  grip = {lua_value(round(slot.part_grip, 3))},")
         # where it spawns: like the game's part it works like (or another item), and the lists ticked
         like = template_of(slot) if slot.part_spawn_vanilla else slot.part_spawn_like.strip()
         if like:

@@ -160,7 +160,26 @@ def decor(game):
                 _decor = (path, json.load(f))
         except (OSError, ValueError):
             _decor = (path, [])
-    return _decor[1]
+    return _decor[1] + _game_wheels(game)
+
+
+def _game_wheels(game):
+    """The game's wheels (from the parts library) as decorative pieces: placed where a front left wheel is."""
+    idx = index(game)
+    wheels = data().get("wheels", {})
+    spot = (data()["defaults"].get("wheel") or [[-0.564, -0.525, 0.988]])[0]
+    v = (data()["kinds"].get("wheel", {}).get("variants") or [{}])[0]
+    out = []
+    for n in data()["parts_by_id"].get("wheel", []):
+        if n not in idx:
+            continue
+        w = wheels.get(n, {})
+        shown = w.get("title") or idx[n].get("name") or n
+        out.append({"id": "wheel/" + n, "car": "", "category": "Wheel", "name": shown, "file": idx[n]["file"],
+                    "pos": list(spot), "rot": v.get("rot", [0, 0, 0, 1]),
+                    "label": f"Wheel: {shown}" + (f" (grip {w['grip']:g})" if "grip" in w else ""),
+                    "note": f"The game's {n}" + (f": radius {w['radius']:g} m, grip {w['grip']:g}" if w else "")})
+    return out
 
 
 def game_name(material, game):

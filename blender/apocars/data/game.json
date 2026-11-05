@@ -1514,5 +1514,133 @@
    "windshield_1_glass",
    "windshield_2_grid"
   ]
+ },
+ "wheels": {
+  "UTV_wheel_front_1": {
+   "radius": 0.28,
+   "width": 0.14,
+   "grip": 1,
+   "title": "UTV front"
+  },
+  "UTV_wheel_rear_1": {
+   "radius": 0.28,
+   "width": 0.21,
+   "grip": 1.1,
+   "title": "UTV rear"
+  },
+  "motorcycle_wheel": {
+   "radius": 0.28,
+   "width": 0.11,
+   "grip": 0.9,
+   "title": "Motorcycle wheel"
+  },
+  "small_wheel_1": {
+   "radius": 0.25,
+   "width": 0.14,
+   "grip": 0.7,
+   "title": "Small rubbish wheel"
+  },
+  "small_wheel_2": {
+   "radius": 0.25,
+   "width": 0.14,
+   "grip": 0.9,
+   "title": "Small wheel T2"
+  },
+  "small_wheel_3": {
+   "radius": 0.25,
+   "width": 0.14,
+   "grip": 0.9,
+   "title": "Small wheel T1"
+  },
+  "truck_wheel_1": {
+   "radius": 0.52,
+   "width": 0.25,
+   "grip": 0.9,
+   "title": "Truck Wheel"
+  },
+  "truck_wheel_1_armored": {
+   "radius": 0.52,
+   "width": 0.25,
+   "grip": 0.9,
+   "title": "Armored Truck Wheel"
+  },
+  "truck_wheel_2": {
+   "radius": 0.52,
+   "width": 0.5,
+   "grip": 1,
+   "title": "Dually Truck Wheel"
+  },
+  "truck_wheel_2_armored": {
+   "radius": 0.52,
+   "width": 0.5,
+   "grip": 1,
+   "title": "Armored Dually Truck Wheel"
+  },
+  "truck_wheel_3": {
+   "radius": 0.52,
+   "width": 0.34,
+   "grip": 1.2,
+   "title": "Off-Road Truck Wheel"
+  },
+  "truck_wheel_3_armored": {
+   "radius": 0.52,
+   "width": 0.34,
+   "grip": 1.2,
+   "title": "Armored Off-Road Truck Wheel"
+  },
+  "wheel_1": {
+   "radius": 0.3,
+   "width": 0.16,
+   "grip": 0.7,
+   "title": "Rubbish Wheel"
+  },
+  "wheel_2": {
+   "radius": 0.3,
+   "width": 0.21,
+   "grip": 0.9,
+   "title": "Street Wheel"
+  },
+  "wheel_2_armored": {
+   "radius": 0.3,
+   "width": 0.21,
+   "grip": 0.9,
+   "title": "Armored Street Wheel"
+  },
+  "wheel_3": {
+   "radius": 0.32,
+   "width": 0.24,
+   "grip": 1,
+   "title": "All-Terrain Wheel"
+  },
+  "wheel_3_armored": {
+   "radius": 0.32,
+   "width": 0.24,
+   "grip": 1,
+   "title": "Armored All-Terrain Wheel"
+  },
+  "wheel_4": {
+   "radius": 0.3,
+   "width": 0.3,
+   "grip": 1.1,
+   "title": "Off-Road Wheel"
+  },
+  "wheel_4_armored": {
+   "radius": 0.3,
+   "width": 0.3,
+   "grip": 1.1,
+   "title": "Armored Off-Road Wheel"
+  },
+  "wheel_5": {
+   "radius": 0.39,
+   "width": 0.35,
+   "grip": 1.2,
+   "title": "Big Off-Road Wheel"
+  },
+  "wheel_5_armored": {
+   "radius": 0.39,
+   "width": 0.35,
+   "grip": 1.2,
+   "title": "Armored Big Off-Road Wheel"
+  }
  }
 }
